@@ -1,7 +1,12 @@
-<ul class="nav nav-tabs">
-  <% for (let v of links[paths[1]]) { %>
-  <li class="nav-item">
-    <a class="nav-link" href="<%=`/${paths[0]}/${paths[1]}/${v.path}`%>"> <%=v.name%> </a>
-  </li>
+<% if(currentPaths[1]) { %>
+  <ul class="nav nav-tabs sub-navi wrapper">
+    <% for (let v of links[currentPaths[1]]) { %>
+      <li class="nav-item">
+        <a class="nav-link <%=(currentPath === secondPath + '/' + v.path ? 'active' : '') %>"
+          href="<%=`${secondPath}/${v.path}`%>">
+          <%=v.name%>
+        </a>
+      </li>
+      <% } %>
+  </ul>
   <% } %>
-</ul>
