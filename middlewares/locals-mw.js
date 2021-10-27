@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
   currentPaths.shift();
   res.locals.currentPaths = currentPaths;
   res.locals.secondPath =
-    '/' + currentPaths[0] + (currentPaths[1] ? currentPaths[1] : '');
+    '/' + currentPaths[0] + (currentPaths[1] ? '/' + currentPaths[1] : '');
   next();
 };
 

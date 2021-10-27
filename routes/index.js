@@ -33,5 +33,7 @@ shop.motive.co.kr/admin/
 [PUT]     shop.motive.co.kr/admin/board         - 게시판 수정
 [DELETE]  shop.motive.co.kr/admin/board/1       - 게시판 삭제
 
+
+shop.1bin.kr
 shop.motive.co.kr/api/
 */
