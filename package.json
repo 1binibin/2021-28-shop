@@ -16,9 +16,9 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/1binibin/2021-28-shop.git/issues"
+    "url": "https://github.com/1binibin/2021-28-shop/issues"
   },
-  "homepage": "https://github.com/1binibin/2021-28-shop.git#readme",
+  "homepage": "https://github.com/1binibin/2021-28-shop#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cross-env": "^7.0.3",
