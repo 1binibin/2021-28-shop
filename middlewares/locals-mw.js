@@ -12,6 +12,7 @@ module.exports = (req, res, next) => {
   res.locals.path.second += res.locals.path.currents[1]
     ? '/' + res.locals.path.currents[1]
     : '';
+  console.log(res.locals.path.second);
   next();
 };
 
