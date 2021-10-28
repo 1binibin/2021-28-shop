@@ -10,6 +10,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/:id', (req, res, next) => {
   const type = req.query.type;
+  console.log(type)
   const boardType = type || 'default';
   if (type === 'update') {
     res.render('admin/board/board-update', { css: 'admin-board', boardType });
