@@ -1,14 +1,14 @@
-<%= { current, currents, second init } = path %>
+<% let { current, currents, second, init } = path %>
 <% if(currents[1]) { %>
-  <ul class="nav nav-tabs sub-navi wrapper">
-    <% for (let v of init[currents[1]]) { %>
-      <li class="nav-item">
-        <a class="nav-link 
-        <%=(second === v.path2 ? 'active' : '') %>"
-          href="<%= `${second}${(v.path ? '/' + v.path : '')}` %>">
-          <%=v.name%>
-        </a>
-      </li>
-      <% } %>
-  </ul>
+<ul class="nav nav-tabs sub-navi wrapper">
+  <% for (let v of init[currents[1]]) { %>
+  <li class="nav-item">
+    <a class="nav-link 
+    <%=(second === v.path2 ? 'active' : '') %>"
+      href="<%=`${second}${(v.path ? '/' + v.path : '')}`%>">
+      <%=v.name%>
+    </a>
+  </li>
   <% } %>
+</ul>
+<% } %>
