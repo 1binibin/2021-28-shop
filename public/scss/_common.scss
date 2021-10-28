@@ -71,6 +71,11 @@ a:not(.btn) {
     background-color: $success-color;
     margin-right: 0.5em;
   }
+  &.secondary {
+    &:before {
+      background-color: $secondary-color;
+    }
+  }
 }
 
 // header-wrapper
@@ -117,10 +122,10 @@ section.wrapper {
   border-right: 1px solid #dee2e6;
 }
 
-.nav-taps {
+.nav-tabs {
   .nav-item.show {
     .nav-link {
-      color: $accent-color;
+      color: $primary-color;
       border-color: #dee2e6 #dee2e6 #fff;
     }
   }
@@ -132,4 +137,3 @@ section.wrapper {
     }
   }
 }
-  
