@@ -1,4 +1,3 @@
-<!-- 게시판관리 / 게시판 관리 -->
 <%- include('../../inc/head.ejs') %>
 <%- include('../../inc/header.ejs') %>
 <section class="board-wrapper init-wrapper wrapper">
@@ -11,10 +10,6 @@
           <td class="content">
             <input type="text" name="tblName" class="form-control">
           </td>
-          <td class="title"></td>
-          <td class="content"></td>
-        </tr>
-        <tr>
           <td class="title bullet secondary circle">게시판 형태</td>
           <td>
             <select type="text" name="tblComment" class="form-control">
@@ -22,12 +17,37 @@
               <option value="gallery">갤러리게시판</option>
             </select>
           </td>
-          <td class="title bullet secondary circle">댓글사용여부</td>
-          <td>
-            <select type="text" name="tblComment" class="form-control">
-              <option value="true">사용</option>
-              <option value="false">사용안함</option>
-            </select>
+        </tr>
+        <tr>
+          <td class="title bullet secondary circle">옵션선택</td>
+          <td colspan="3">
+            <div class="form-inline">
+              <label class="mr-4">
+                <span class="bullet circle">첨부이미지:</span>
+                <select type="text" name="tblImg" class="form-control ml-2">
+                  <option value="">사용안함</option>
+                  <% for(let i=1; i<=10; i++) { %>
+                    <option value="<%= i %>"><%= i %>개</option>
+                  <% } %>
+                </select>
+              </label>
+              <label class="mr-4">
+                <span class="bullet circle">첨부파일:</span>
+                <select type="text" name="tblFile" class="form-control ml-2">
+                  <option value="">사용안함</option>
+                  <% for(let i=1; i<=10; i++) { %>
+                    <option value="<%= i %>"><%= i %>개</option>
+                  <% } %>
+                </select>
+              </label>
+              <label class="mr-4">
+                <span class="bullet circle">댓글사용:</span>
+                <select type="text" name="tblComment" class="form-control ml-2">
+                  <option value="true">사용</option>
+                  <option value="false">사용안함</option>
+                </select>
+              </label>
+            </div>
           </td>
         </tr>
         <tr>
@@ -39,7 +59,7 @@
     </table>
   </form>
   <h4 class="title bullet my-2">게시판 리스트</h4>
-  <table class="table list-tbl text-center">
+  <table class="table list-tbl text-center border-bottom">
     <thead>
       <tr>
         <th>게시판 이름</th>
