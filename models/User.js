@@ -41,22 +41,22 @@ module.exports = (sequelize, DataType) => {
         */
         values: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
         allowNull: false,
-        defaultValue: '2',
+        default: '2',
       },
       addrPost: {
         type: DataType.CHAR(5),
       },
       addrRoad: {
-        type: DataType.STRING(5),
+        type: DataType.STRING(255),
       },
       addrJibun: {
-        type: DataType.STRING(5),
+        type: DataType.STRING(255),
       },
       addrComment: {
-        type: DataType.STRING(5),
+        type: DataType.STRING(255),
       },
       addrDetail: {
-        type: DataType.STRING(5),
+        type: DataType.STRING(255),
       },
     },
     {
@@ -66,8 +66,10 @@ module.exports = (sequelize, DataType) => {
       paranoid: true,
     }
   );
+
   User.associate = (models) => {
     User.hasMany(models.Board);
   };
+
   return User;
 };
