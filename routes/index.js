@@ -6,6 +6,7 @@ shop.1bin.co.kr/admin/
 [GET]     shop.1bin.co.kr/admin/main    - 메인 화면
 
 [GET]     shop.1bin.co.kr/admin/user?page=1        - 회원리스트
+[GET]     shop.1bin.co.kr/admin/user?type=create   - 회원리스트
 [GET]     shop.1bin.co.kr/admin/user/1             - 회원내용
 [GET]     shop.1bin.co.kr/admin/user/1?type=update - 회원내용 수정 화면
 [PUT]     shop.1bin.co.kr/admin/user               - 회원내용수정(저장)
