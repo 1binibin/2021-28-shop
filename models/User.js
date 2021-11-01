@@ -24,7 +24,7 @@ module.exports = (sequelize, DataType) => {
       email: {
         type: DataType.STRING(255),
         allowNull: false,
-        validator: {
+        validate: {
           isEmail: true,
         },
       },
@@ -41,7 +41,22 @@ module.exports = (sequelize, DataType) => {
         */
         values: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
         allowNull: false,
-        default: '2',
+        defaultValue: '2',
+      },
+      addrPost: {
+        type: DataType.CHAR(5),
+      },
+      addrRoad: {
+        type: DataType.STRING(5),
+      },
+      addrJibun: {
+        type: DataType.STRING(5),
+      },
+      addrComment: {
+        type: DataType.STRING(5),
+      },
+      addrDetail: {
+        type: DataType.STRING(5),
       },
     },
     {
@@ -51,5 +66,8 @@ module.exports = (sequelize, DataType) => {
       paranoid: true,
     }
   );
+  User.associate = (models) => {
+    User.hasMany(models.Board);
+  };
   return User;
 };
