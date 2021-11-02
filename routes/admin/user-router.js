@@ -3,7 +3,13 @@ const express = require('express');
 const router = express.Router();
 const createError = require('http-errors');
 const bcrypt = require('bcrypt');
-const { error, telNumber, alert, generateUser } = require('../../modules/util');
+const {
+  error,
+  telNumber,
+  alert,
+  getStringTel,
+  getArrayTel,
+} = require('../../modules/util');
 const { User, Sequelize } = require('../../models');
 const { Op } = Sequelize;
 const pager = require('../../middlewares/pager-mw');
@@ -16,9 +22,7 @@ router.get('/', (req, res, next) => {
       type: req.query.type || '',
     };
     res.render('admin/user/user-form', ejs);
-  } else {
-    next();
-  }
+  } else next();
 });
 
 // 회원리스트
@@ -34,19 +38,22 @@ router.get('/', pager(User), async (req, res, next) => {
 });
 
 // 회원 수정 화면
-router.get('/:id', (req, res, next) => {
-  const ejs = {
-    telNumber,
-    type: req.query.type || '',
-  };
-  res.render('admin/user/user-form', ejs);
+router.get('/:id', async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.params.id } });
+    user.tel = getArrayTel(user.tel);
+    const ejs = { telNumber, type: 'update', user };
+    res.render('admin/user/user-form', ejs);
+  } catch (err) {
+    next(createError(err));
+  }
 });
 
 // 회원 저장
 router.post('/', async (req, res, next) => {
   try {
+    req.body.tel = getStringTel(req.body.tel1, req.body.tel2, req.body.tel3);
     const user = await User.create(req.body);
-    user.save();
     res.send(alert('회원가입이 완료되었습니다.', '/admin/user'));
   } catch (err) {
     next(createError(err));
