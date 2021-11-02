@@ -36,6 +36,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       email: {
         type: DataTypes.STRING(255),
         allowNull: false,
+        unique: true,
         validate: {
           isEmail: true,
         },
@@ -72,9 +73,6 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       },
       tel: {
         type: DataTypes.STRING(14),
-        validate: {
-          len: [11, 14],
-        },
       },
     },
     {
