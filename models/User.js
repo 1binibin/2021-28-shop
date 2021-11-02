@@ -88,16 +88,19 @@ module.exports = (sequelize, { DataTypes, Op }) => {
   };
 
   User.beforeCreate(async (user) => {
+    // 데이터에 넣기전에 bcrypt 처리
     const { BCRYPT_SALT: salt, BCRYPT_ROUND: rnd } = process.env;
     const hash = await bcrypt.hash(user.userpw + salt, Number(rnd));
     user.userpw = hash;
   });
 
+  // Class static method / instance객체의 prototype 안됨
   User.searchUser = async function (query, pager) {
     let { field = 'id', search = '', sort = 'desc' } = query;
     let where = search ? { [field]: { [Op.like]: '%' + search + '%' } } : null;
     if (field === 'addrRoad' && search !== '') {
       where = {
+        // 1번 or 2번 or 3번 or 4번 or 5번
         [Op.or]: {
           addrPost: { [Op.like]: '%' + search + '%' },
           addrRoad: { [Op.like]: '%' + search + '%' },
@@ -108,6 +111,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       };
     }
     const rs = await this.findAll({
+      // 기본적으로 'Orderby User.id DESC' 작동
       order: [[field || 'id', sort || 'desc']],
       offset: pager.startIdx,
       limit: pager.listCnt,

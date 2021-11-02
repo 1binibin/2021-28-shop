@@ -34,6 +34,66 @@
     }
   }
   &.update-wrapper {
+    .user-tbl {
+      .form-control {
+        &:focus {
+          color: unset;
+          background-color: unset;
+          border-color: #005499;
+          outline: unset;
+          box-shadow: unset;
+        }
+
+        &.active {
+          border-color: #005499;
+
+          &:focus {
+            border-color: #005499;
+          }
+        }
+
+        &.error {
+          border-color: #a70404;
+
+          &:focus {
+            border-color: #a70404;
+          }
+        }
+      }
+
+      .form-wrapper {
+        table {
+          width: 100%;
+          border: 1px solid #ddd;
+
+          td {
+            padding: 0.75em;
+            border-bottom: 1px solid #dfdfdf;
+
+            &.title {
+              width: 180px;
+            }
+
+            &.require::after {
+              display: inline-block;
+              content: '*';
+              color: #f10;
+              margin-left: 0.5em;
+              font-size: 1.25em;
+            }
+          }
+        }
+
+        .valid {
+          padding-top: 0.5em;
+          color: #00559b;
+
+          &.error {
+            color: #a70404;
+          }
+        }
+      }
+    }
     td.require::before {
       display: inline-block;
       content: '*';

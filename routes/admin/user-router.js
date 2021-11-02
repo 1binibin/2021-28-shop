@@ -1,17 +1,8 @@
-const path = require('path');
 const express = require('express');
 const router = express.Router();
 const createError = require('http-errors');
-const bcrypt = require('bcrypt');
-const {
-  error,
-  telNumber,
-  alert,
-  getStringTel,
-  getArrayTel,
-} = require('../../modules/util');
-const { User, Sequelize } = require('../../models');
-const { Op } = Sequelize;
+const { telNumber, alert, getStringTel, getArrayTel } = require('../../modules/util');
+const { User } = require('../../models');
 const pager = require('../../middlewares/pager-mw');
 
 // 회원 등록 화면

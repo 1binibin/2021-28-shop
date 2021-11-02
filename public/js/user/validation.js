@@ -5,7 +5,6 @@ passwd : 6 ~ 24
 passwd === passwd2
 email 검증
 */
-
 (function initValidation(form) {
   var ERR_API = '에러가 발생했습니다.';
 
@@ -52,16 +51,16 @@ email 검증
           params: { key: 'userid', value: useridEl.value.trim() },
         })
         .then(function (r) {
-          if (!r.data) return verifyFalse(useridEl, useridTxt, '아이디가 사용중입니다.');
+          if (!r.data) return verifyFalse(useridEl, useridTxt, '사용중인 아이디 입니다.');
           else {
-            verifyTrue(useridEl, useridTxt, '사용할 수 있습니다');
+            verifyTrue(useridEl, useridTxt, '사용할 수 있습니다.');
             axios
               .get('/api/verify', {
                 params: { key: 'email', value: emailEl.value.trim() },
               })
               .then(function (r) {
                 if (!r.data)
-                  return verifyFalse(emailEl, emailTxt, '이메일이 사용중입니다.');
+                  return verifyFalse(emailEl, emailTxt, '사용중인 아이디 입니다.');
                 else {
                   verifyTrue(emailEl, emailTxt);
                   f.submit();
@@ -93,8 +92,9 @@ email 검증
       axios
         .get('/api/verify', { params: { key: 'userid', value: userid } })
         .then(function (r) {
-          if (r.data) validId = verifyTrue(useridEl, useridTxt, '사용할 수 있습니다.');
-          else return verifyFalse(useridEl, useridTxt, '아이디를 확인하세요.');
+          if (r.data)
+            validId = verifyTrue(useridEl, useridTxt, '사용 가능한 아이디 입니다.');
+          else return verifyFalse(useridEl, useridTxt, '사용중인 아이디 입니다.');
         })
         .catch(function (err) {
           console.log(err);
@@ -124,7 +124,7 @@ email 검증
       return verifyFalse(
         passwd2El,
         passwd2Txt,
-        passwd2 === '' ? '패스워드를 입력하세요.' : '패스워드는 6 ~ 24자 입니다.'
+        passwd2 === '' ? '패스워드를 재입력하세요.' : '패스워드는 6 ~ 24자 입니다.'
       );
     } else {
       return verifyTrue(passwd2El, passwd2Txt);
@@ -138,8 +138,8 @@ email 검증
       return false;
     }
     if (passwd !== passwd2) {
-      verifyFalse(passwdEl, passwdTxt, '패스워드를 확인하세요.');
-      verifyFalse(passwd2El, passwd2Txt, '패스워드를 확인하세요.');
+      verifyFalse(passwdEl, passwdTxt, '패스워드가 일치하지 않습니다.');
+      verifyFalse(passwd2El, passwd2Txt, '패스워드가 일치하지 않습니다.');
       return false;
     } else {
       verifyTrue(passwdEl, passwdTxt);
@@ -162,7 +162,7 @@ email 검증
     var email = emailEl.value.trim();
     verifyReset(emailEl, emailTxt);
     if (email === '') {
-      return verifyFalse(emailEl, emailTxt, '이메일을 입력하세요.');
+      return verifyFalse(emailEl, emailTxt, '사용중인 이메일 입니다.');
     } else if (!validator.isEmail(email)) {
       return verifyFalse(emailEl, emailTxt, '이메일 형식이 맞지 않습니다.');
     } else {
@@ -172,7 +172,7 @@ email 검증
         })
         .then(function (r) {
           if (r.data) validEmail = verifyTrue(emailEl, emailTxt);
-          else return verifyFalse(emailEl, emailTxt, '이메일을 확인하세요.');
+          else return verifyFalse(emailEl, emailTxt, '사용중인 이메일 입니다.');
         })
         .catch(function (err) {
           return verifyFalse(emailEl, emailTxt, ERR_API);
