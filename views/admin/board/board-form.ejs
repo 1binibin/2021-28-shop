@@ -1,10 +1,10 @@
-<!-- 게시판 관리 / 게시물관리 / 뷰페이지 -->
 <%- include('../../inc/head.ejs') %>
 <%- include('../../inc/header.ejs') %>
 <section class="board-wrapper view-wrapper wrapper">
-  <%- include('./inc-select.ejs') %>
+  <%- include('./inc-select.ejs') %> 
   <div class="tbl-wrap">
-    <%- include(`../../board/form-${boardType}.ejs`) %>
+    <%- include(`../../board/${boardType}-form.ejs`) %> 
   </div>
 </section>
 <%- include('../../inc/foot.ejs') %>
+

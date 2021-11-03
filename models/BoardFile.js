@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize, { DataTypes, Op }) => {
   const BoardFile = sequelize.define(
     'BoardFile',
     {
