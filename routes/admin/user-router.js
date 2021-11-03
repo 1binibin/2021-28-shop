@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const createError = require('http-errors');
-const { telNumber, alert, getStringTel, getArrayTel } = require('../../modules/util');
+const { telNumber, alert, getSeparateArray } = require('../../modules/util');
 const { User } = require('../../models');
 const pager = require('../../middlewares/pager-mw');
 
@@ -29,7 +29,7 @@ router.get('/', pager(User), async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   try {
     const user = await User.findOne({ where: { id: req.params.id } });
-    user.tel = getArrayTel(user.tel);
+    user.tel = getSeparateArray(user.tel, '-');
     const ejs = { telNumber, user };
     res.render('admin/user/user-update', ejs);
   } catch (err) {
@@ -40,7 +40,6 @@ router.get('/:id', async (req, res, next) => {
 // 회원 저장
 router.post('/', async (req, res, next) => {
   try {
-    req.body.tel = getStringTel(req.body.tel1, req.body.tel2, req.body.tel3);
     const user = await User.create(req.body);
     res.send(alert('회원가입이 완료되었습니다.', '/admin/user'));
   } catch (err) {
@@ -51,8 +50,10 @@ router.post('/', async (req, res, next) => {
 // 회원 수정
 router.put('/', async (req, res, next) => {
   try {
-    req.body.tel = getStringTel(req.body.tel1, req.body.tel2, req.body.tel3);
-    const [rs] = await User.update(req.body, { where: { id: req.body.id } });
+    const [rs] = await User.update(req.body, {
+      where: { id: req.body.id },
+      individualHooks: true, // beforeUpdate를 단일객체로 실행하게 해줌
+    });
     if (rs) res.send(alert('회원수정이 완료되었습니다.', '/admin/user'));
     else res.send(alert('처리되지 않았습니다.', '/admin/user'));
   } catch (err) {
