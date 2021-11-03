@@ -150,10 +150,9 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     user.tel = getSeparateString([user.tel1, user.tel2, user.tel3], '-');
   });
 
-  // Class static method / instance객체의 prototype 안됨
-  User.searchUser = async function (query, pager) {
-    let { field = 'id', search = '', sort = 'desc' } = query;
-    let where = search ? { [field]: { [Op.like]: '%' + search + '%' } } : null;
+  const generateWhere = (sequelize, Op, { field, search }) => {
+    let where = null;
+    where = search ? { [field]: { [Op.like]: '%' + search + '%' } } : null;
     if (field === 'tel' && search !== '') {
       where = sequelize.where(sequelize.fn('replace', sequelize.col('tel'), '-', ''), {
         [Op.like]: '%' + search.replace(/-/g, '') + '%',
@@ -171,12 +170,25 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         },
       };
     }
+    return where;
+  };
+
+  User.getCount = async function (query) {
+    return await this.count({
+      where: generateWhere(sequelize, Op, query),
+    });
+  };
+
+  // Class static method / instance객체의 prototype 안됨
+  User.searchUser = async function (query, pager) {
+    let { field = 'id', sort = 'desc' } = query;
+
     const rs = await this.findAll({
       // 기본적으로 'Orderby User.id DESC' 작동
-      order: [[field || 'id', sort || 'desc']],
+      order: [[field * 1 || 'id', sort || 'desc']],
       offset: pager.startIdx,
       limit: pager.listCnt,
-      where,
+      where: generateWhere(sequelize, Op, query),
     });
     const users = generateUser(rs);
     return users;

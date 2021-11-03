@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const createError = require('http-errors');
+const numeral = require('numeral');
 const { telNumber, alert, getSeparateArray } = require('../../modules/util');
 const { User } = require('../../models');
 const pager = require('../../middlewares/pager-mw');
@@ -18,7 +19,7 @@ router.get('/', pager(User), async (req, res, next) => {
   try {
     let { field = 'id', search = '', sort = 'desc' } = req.query;
     const users = await User.searchUser(req.query, req.pager);
-    const ejs = { telNumber, pager: req.pager, users, field, sort, search };
+    const ejs = { telNumber, pager: req.pager, users, field, sort, search, numeral };
     res.render('admin/user/user-list', ejs);
   } catch (err) {
     next(createError(err));
