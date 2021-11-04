@@ -20,7 +20,7 @@ module.exports = {
       },
       {
         path: ['/admin/board', '/admin/binit'],
-        link: '/admin/board',
+        link: '/admin/binit',
         src: 'b4',
       },
       /* {
@@ -30,7 +30,7 @@ module.exports = {
       }, */
       {
         path: '//analytics.google.com',
-        link: '//analytics.google.com',
+        link: '/admin/analytics',
         src: 'b9',
         target: '_blank',
       },
