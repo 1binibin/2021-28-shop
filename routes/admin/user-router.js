@@ -1,10 +1,11 @@
+const path = require('path');
 const express = require('express');
 const router = express.Router();
 const createError = require('http-errors');
-const numeral = require('numeral');
 const { telNumber, alert, getSeparateArray } = require('../../modules/util');
 const { User } = require('../../models');
 const pager = require('../../middlewares/pager-mw');
+const numeral = require('numeral');
 
 // 회원 등록 화면
 router.get('/', (req, res, next) => {
@@ -18,8 +19,16 @@ router.get('/', (req, res, next) => {
 router.get('/', pager(User), async (req, res, next) => {
   try {
     let { field = 'id', search = '', sort = 'desc' } = req.query;
-    const users = await User.searchUser(req.query, req.pager);
-    const ejs = { telNumber, pager: req.pager, users, field, sort, search, numeral };
+    const users = await User.searchList(req.query, req.pager);
+    const ejs = {
+      telNumber,
+      pager: req.pager,
+      users,
+      field,
+      sort,
+      search,
+      numeral,
+    };
     res.render('admin/user/user-list', ejs);
   } catch (err) {
     next(createError(err));
@@ -53,10 +62,10 @@ router.put('/', async (req, res, next) => {
   try {
     const [rs] = await User.update(req.body, {
       where: { id: req.body.id },
-      individualHooks: true, // beforeUpdate를 단일객체로 실행하게 해줌
+      individualHooks: true,
     });
     if (rs) res.send(alert('회원수정이 완료되었습니다.', '/admin/user'));
-    else res.send(alert('처리되지 않았습니다.', '/admin/user'));
+    else res.send(alert('처리되지 않았습니다', '/admin/user'));
   } catch (err) {
     next(createError(err));
   }

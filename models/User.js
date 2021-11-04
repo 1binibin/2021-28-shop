@@ -1,47 +1,6 @@
 const bcrypt = require('bcrypt');
 const { getSeparateString } = require('../modules/util');
 
-const generateUser = (_users) => {
-  const users = _users.map((v) => {
-    v.addr1 =
-      v.addrPost && v.addrRoad
-        ? `[${v.addrPost}]
-      ${v.addrRoad || ''}
-      ${v.addrComment || ''}
-      ${v.addrDetail || ''}`
-        : '';
-    v.addr2 =
-      v.addrPost && v.addrJibun
-        ? `[${v.addrPost}]
-      ${v.addrJibun}
-      ${v.addrDetail || ''}`
-        : '';
-    v.level = '';
-    switch (v.status) {
-      case '0':
-        v.level = '탈퇴회원';
-        break;
-      case '1':
-        v.level = '유휴회원';
-        break;
-      case '2':
-        v.level = '일반회원';
-        break;
-      case '8':
-        v.level = '관리자';
-        break;
-      case '9':
-        v.level = '최고관리자';
-        break;
-      default:
-        v.level = '회원';
-        break;
-    }
-    return v;
-  });
-  return users;
-};
-
 module.exports = (sequelize, { DataTypes, Op }) => {
   const User = sequelize.define(
     'User',
@@ -146,7 +105,6 @@ module.exports = (sequelize, { DataTypes, Op }) => {
   };
 
   User.beforeCreate(async (user) => {
-    // 데이터에 넣기전에 bcrypt 처리
     const { BCRYPT_SALT: salt, BCRYPT_ROUND: rnd } = process.env;
     const hash = await bcrypt.hash(user.userpw + salt, Number(rnd));
     user.userpw = hash;
@@ -154,53 +112,63 @@ module.exports = (sequelize, { DataTypes, Op }) => {
   });
 
   User.beforeUpdate(async (user) => {
-    // 데이터에 Update전에 tel 처리, user-router에서 individualHooks: true
     user.tel = getSeparateString([user.tel1, user.tel2, user.tel3], '-');
   });
 
-  const generateWhere = (sequelize, Op, { field, search }) => {
-    let where = null;
-    where = search ? { [field]: { [Op.like]: '%' + search + '%' } } : null;
-    if (field === 'tel' && search !== '') {
-      // sequelize.where(내장함수, 찾는필드, 값)
-      where = sequelize.where(sequelize.fn('replace', sequelize.col('tel'), '-', ''), {
-        [Op.like]: '%' + search.replace(/-/g, '') + '%', // JS replace는 ('-')를 한개만 없앰 -> 정규표현식
-      });
-    }
-    if (field === 'addrRoad' && search !== '') {
-      where = {
-        // 1번 or 2번 or 3번 or 4번 or 5번
-        [Op.or]: {
-          addrPost: { [Op.like]: '%' + search + '%' },
-          addrRoad: { [Op.like]: '%' + search + '%' },
-          addrJibun: { [Op.like]: '%' + search + '%' },
-          addrComment: { [Op.like]: '%' + search + '%' },
-          addrDetail: { [Op.like]: '%' + search + '%' },
-        },
-      };
-    }
-    return where;
-  };
-
   User.getCount = async function (query) {
     return await this.count({
-      where: generateWhere(sequelize, Op, query),
+      where: sequelize.getWhere(query),
     });
   };
 
-  // Class static method / instance객체의 prototype 안됨
-  User.searchUser = async function (query, pager) {
+  User.searchList = async function (query, pager) {
     let { field = 'id', sort = 'desc' } = query;
-
     const rs = await this.findAll({
-      // 기본적으로 'Orderby User.id DESC' 작동
-      order: [[field * 1 || 'id', sort || 'desc']],
+      order: [[field || 'id', sort || 'desc']],
       offset: pager.startIdx,
       limit: pager.listCnt,
-      where: generateWhere(sequelize, Op, query),
+      where: sequelize.getWhere(query),
     });
-    const users = generateUser(rs);
-    return users;
+    const lists = rs
+      .map((v) => v.toJSON())
+      .map((v) => {
+        v.addr1 =
+          v.addrPost && v.addrRoad
+            ? `[${v.addrPost}] 
+        ${v.addrRoad || ''} 
+        ${v.addrComment || ''}
+        ${v.addrDetail || ''}`
+            : '';
+        v.addr2 =
+          v.addrPost && v.addrJibun
+            ? `[${v.addrPost}] 
+        ${v.addrJibun}
+        ${v.addrDetail || ''}`
+            : '';
+        v.level = '';
+        switch (v.status) {
+          case '0':
+            v.level = '탈퇴회원';
+            break;
+          case '1':
+            v.level = '유휴회원';
+            break;
+          case '2':
+            v.level = '일반회원';
+            break;
+          case '8':
+            v.level = '관리자';
+            break;
+          case '9':
+            v.level = '최고관리자';
+            break;
+          default:
+            v.level = '회원';
+            break;
+        }
+        return v;
+      });
+    return lists;
   };
 
   return User;
