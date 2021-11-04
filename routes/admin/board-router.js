@@ -8,14 +8,14 @@ const boardinit = require('../../middlewares/boardinit-mw');
 router.get('/', boardinit, (req, res, next) => {
   const { type } = req.query;
   if (type === 'create') {
-    res.render('admin/board/board-form', { type, binit: req.binit });
+    res.render('admin/board/board-form', { type });
   } else next();
 });
 
 // 리스트
-router.get('/', (req, res, next) => {
-  const { type, boardType = 'default' } = req.query;
-  res.render('admin/board/board-list', { type, boardType });
+router.get('/', boardinit, (req, res, next) => {
+  const { type } = req.query;
+  res.render('admin/board/board-list', { type });
 });
 
 router.get('/:id', (req, res, next) => {
@@ -41,3 +41,18 @@ router.delete('/', (req, res, next) => {
 });
 
 module.exports = { name: '/board', router };
+
+/* // 신규글 작성
+router.get('/', boardinit, (req, res, next) => {
+  const { type } = req.query;
+  if (type === 'create') {
+    res.render('admin/board/board-form', { type, ...binit });
+  } else next();
+});
+
+// 리스트
+router.get('/', boardinit, (req, res, next) => {
+  const binit = req.binit;
+  const { type } = req.query;
+  res.render('admin/board/board-list', { type, ...binit });
+}); */

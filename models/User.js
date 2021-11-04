@@ -162,8 +162,9 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     let where = null;
     where = search ? { [field]: { [Op.like]: '%' + search + '%' } } : null;
     if (field === 'tel' && search !== '') {
+      // sequelize.where(내장함수, 찾는필드, 값)
       where = sequelize.where(sequelize.fn('replace', sequelize.col('tel'), '-', ''), {
-        [Op.like]: '%' + search.replace(/-/g, '') + '%',
+        [Op.like]: '%' + search.replace(/-/g, '') + '%', // JS replace는 ('-')를 한개만 없앰 -> 정규표현식
       });
     }
     if (field === 'addrRoad' && search !== '') {

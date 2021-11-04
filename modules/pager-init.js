@@ -14,7 +14,6 @@ module.exports = (_page, _totalRecord, _listCnt = 5, _pagerCnt = 3) => {
   const nextPager = endPage === totalPage ? totalPage : endPage + 1;
   return {
     page,
-    totalPage,
     listCnt,
     pagerCnt,
     totalPage,
