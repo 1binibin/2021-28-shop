@@ -1,10 +1,9 @@
 /* 
-req.query.boardid -> 현재 게시판 정보
-전체 게시판정보
+req.query.boardId -> 현재 게시판 정보
+전체 게시판 정보
 */
-
-const { BoardInit } = require('../models');
 const _ = require('lodash');
+const { BoardInit } = require('../models');
 
 module.exports = (field) => {
   return async (req, res, next) => {

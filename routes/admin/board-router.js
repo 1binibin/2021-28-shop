@@ -1,8 +1,8 @@
 const path = require('path');
 const express = require('express');
 const createError = require('http-errors');
-const router = express.Router();
 const numeral = require('numeral');
+const router = express.Router();
 const { relPath, dateFormat } = require('../../modules/util');
 const boardInit = require('../../middlewares/boardinit-mw');
 const uploader = require('../../middlewares/multer-mw');
@@ -21,12 +21,13 @@ router.get('/', boardInit('query'), (req, res, next) => {
 // 리스트
 router.get('/', boardInit('query'), pager(Board), async (req, res, next) => {
   try {
-    let { type, field = 'id', search = '', sort = 'desc' } = req.query;
+    const { type, field = 'id', search = '', sort = 'desc' } = req.query;
     req.query.field = field;
     req.query.search = search;
+    req.query.search = search;
     req.query.boardId = 1;
+    console.log(req.query);
     const lists = await Board.searchList(req.query, req.pager, BoardFile);
-
     res.render('admin/board/board-list', {
       type,
       lists,
@@ -81,18 +82,3 @@ router.delete('/', (req, res, next) => {
 });
 
 module.exports = { name: '/board', router };
-
-/* // 신규글 작성
-router.get('/', boardinit, (req, res, next) => {
-  const { type } = req.query;
-  if (type === 'create') {
-    res.render('admin/board/board-form', { type, ...binit });
-  } else next();
-});
-
-// 리스트
-router.get('/', boardinit, (req, res, next) => {
-  const binit = req.binit;
-  const { type } = req.query;
-  res.render('admin/board/board-list', { type, ...binit });
-}); */
