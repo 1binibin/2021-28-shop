@@ -8,7 +8,7 @@ const afterUploader = require('../../middlewares/after-multer-mw');
 const { Board, BoardFile } = require('../../models');
 
 // 신규글 작성
-router.get('/', boardinit, (req, res, next) => {
+router.get('/', boardinit('query'), (req, res, next) => {
   const { type } = req.query;
   if (type === 'create') {
     res.render('admin/board/board-form', { type });
@@ -16,7 +16,7 @@ router.get('/', boardinit, (req, res, next) => {
 });
 
 // 리스트
-router.get('/', boardinit, (req, res, next) => {
+router.get('/', boardinit('query'), (req, res, next) => {
   const { type } = req.query;
   res.render('admin/board/board-list', { type });
 });
@@ -35,9 +35,9 @@ router.get('/:id', (req, res, next) => {
 // 게시물 저장
 router.post(
   '/',
-  boardinit,
   uploader.fields([{ name: 'img' }, { name: 'pds' }]),
   afterUploader(['img', 'pds']),
+  boardinit('body'),
   async (req, res, next) => {
     try {
       req.body.user_id = 1; // 회원작업 후 수정 예정
