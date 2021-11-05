@@ -24,9 +24,7 @@ router.get('/', boardInit('query'), pager(Board), async (req, res, next) => {
     const { type, field = 'id', search = '', sort = 'desc' } = req.query;
     req.query.field = field;
     req.query.search = search;
-    req.query.search = search;
     req.query.boardId = 1;
-    console.log(req.query);
     const lists = await Board.searchList(req.query, req.pager, BoardFile);
     res.render('admin/board/board-list', {
       type,
