@@ -10,7 +10,7 @@
       </div>
   <ul class="list-wrap">
     <% for(let v of lists) { %>
-    <li class="list" data-link="/<%= currents[0] %>/<%= currents[1] %>/<%= v.id %>?boardId=<%= v.boardId %>">
+    <li class="list" data-link="/<%= currents[0] %>/<%= currents[1] %>/<%= v.id %>?boardId=<%= boardId %>">
       <div class="img-wrap" style="background-image: url('<%= v.thumbSrc%>');"></div>
       <div class="content-wrap">
         <div class="title"><%= v.title %></div>

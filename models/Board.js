@@ -79,7 +79,21 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     });
   };
 
-  Board.searchList = async function (query, BoardFile, BoardInit) {
+  Board.getViewData = function (rs) {
+    const data = rs
+      .map((v) => v.toJSON())
+      .map((v) => {
+        v.updatedAt = dateFormat(v.updatedAt);
+        if (v.BoardFiles.length) v.thumbSrc = relPath(v.BoardFiles[0].saveName);
+        delete v.createdAt;
+        delete v.deletedAt;
+        delete v.BoardFiles;
+        return v;
+      });
+    return data;
+  };
+
+  Board.getLists = async function (query, BoardFile, BoardInit) {
     let { field, sort, boardId, page } = query;
     if (!boardId) {
       let { id } = await BoardInit.findOne({
@@ -106,16 +120,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       },
       include: [{ model: BoardFile, attributes: ['saveName'] }],
     });
-    const lists = rs
-      .map((v) => v.toJSON())
-      .map((v) => {
-        v.updatedAt = dateFormat(v.updatedAt);
-        if (v.BoardFiles.length) v.thumbSrc = relPath(v.BoardFiles[0].saveName);
-        delete v.createdAt;
-        delete v.deletedAt;
-        delete v.BoardFiles;
-        return v;
-      });
+    const lists = this.getViewData(rs);
 
     return { lists, pager, totalRecord: numeral(pager.totalRecord).format() };
   };

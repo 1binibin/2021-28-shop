@@ -1,4 +1,3 @@
-const path = require('path');
 const express = require('express');
 const router = express.Router();
 const createError = require('http-errors');
@@ -17,7 +16,7 @@ router.get('/', (req, res, next) => {
 // 회원리스트
 router.get('/', queries(), async (req, res, next) => {
   try {
-    const { lists, pager, totalRecord } = await User.searchList(req.query);
+    const { lists, pager, totalRecord } = await User.getLists(req.query);
     const ejs = {
       telNumber,
       pager,

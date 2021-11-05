@@ -1,71 +1,71 @@
 <style>
-  .search-wrap { position: relative; }
+  .search-wrap {position: relative;}
   .search-wrap .bt-search-reset {
     position: absolute;
     top: 52%;
     transform: translateY(-50%);
     font-size: 1.25em;
     right: 74px;
-    cursor: pointer;
     display: none;
+    cursor: pointer;
   }
   .search-wrap .bt-search-reset.active {
     opacity: 0.5;
     display: block;
   }
-  .search-wrap .bt-search-reset.active:hover {
+  .search-wrap .bt-search-reset:hover {
     opacity: 1;
   }
 </style>
 <div class="search-wrap">
   <form action="/<%= currents[0] %>/<%= currents[1] %>" method="GET" class="form-inline">
-    <% if(currents[1] === 'board') { %>
-    <input type="hidden" name="boardId" value="<%= boardId %>">
-    <% } %
+    <% if(currents[1] === 'board') { %> 
+      <input type="hidden" name="boardId" value="<%= boardId %>">
+    <% } %> 
     <input type="hidden" name="status" value="<%= status %>">
     <select name="field" class="form-control mr-2" onchange="this.form.submit();">
-      <option value=""
-      <%= (field === '' ? 'selected' : '') %>>
+      <option value="" 
+      <%= (field === '' ? 'selected': '') %>>
       선택하세요</option>
-      <% if(currents[1] === 'user' || currents[1] === 'order') { %>
+      <% if(currents[1] === 'user' || currents[1] === 'order') { %> 
         <option value="userid"
-        <%= (field === 'userid' ? 'selected' : '') %>>
+        <%= (field === 'userid' ? 'selected': '') %>>
         아이디</option>
         <option value="username"
-        <%= (field === 'username' ? 'selected' : '') %>>
+        <%= (field === 'username' ? 'selected': '') %>>
         이름</option>
         <option value="email"
-        <%= (field === 'email' ? 'selected' : '') %>>
+        <%= (field === 'email' ? 'selected': '') %>>
         이메일</option>
         <option value="tel"
-        <%= (field === 'tel' ? 'selected' : '') %>>
+        <%= (field === 'tel' ? 'selected': '') %>>
         전화번호</option>
         <option value="addrRoad"
-        <%= (field === 'addrRoad' ? 'selected' : '') %>>
+        <%= (field === 'addrRoad' ? 'selected': '') %>>
         주소</option>
-      <% } %>
-      <% if(currents[1] === 'board') { %>
+      <% } %> 
+      <% if(currents[1] === 'board') { %> 
         <option value="title"
-        <%= (field === 'title' ? 'selected' : '') %>>
+        <%= (field === 'title' ? 'selected': '') %>>
         제목</option>
         <option value="content"
-        <%= (field === 'content' ? 'selected' : '') %>>
+        <%= (field === 'content' ? 'selected': '') %>>
         내용</option>
         <option value="writer"
-        <%= (field === 'writer' ? 'selected' : '') %>>
+        <%= (field === 'writer' ? 'selected': '') %>>
         작성자</option>
-      <% } %>
-      <% if(currents[1] === 'prd') { %>
+      <% } %> 
+      <% if(currents[1] === 'prd') { %> 
         <option value="code"
-        <%= (field === 'code' ? 'selected' : '') %>>
+        <%= (field === 'code' ? 'selected': '') %>>
         상품코드</option>
         <option value="name"
-        <%= (field === 'name' ? 'selected' : '') %>>
+        <%= (field === 'name' ? 'selected': '') %>>
         상품명</option>
         <option value="content"
-        <%= (field === 'content' ? 'selected' : '') %>>
-        설명</option>
-      <% } %>
+        <%= (field === 'content' ? 'selected': '') %>>
+        상품설명</option>
+      <% } %> 
     </select>
     <input type="text" name="search" class="form-control mr-2" value="<%= search %>">
     <i class="fa fa-times bt-search-reset"></i>
