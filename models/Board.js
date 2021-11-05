@@ -1,4 +1,6 @@
+const numeral = require('numeral');
 const { dateFormat, relPath } = require('../modules/util');
+const createPager = require('../modules/pager-init');
 
 module.exports = (sequelize, { DataTypes, Op }) => {
   const Board = sequelize.define(
@@ -71,17 +73,35 @@ module.exports = (sequelize, { DataTypes, Op }) => {
 
   Board.getCount = async function (query) {
     return await this.count({
-      where: { ...sequelize.getWhere(query), binit_id: query.boardId },
+      where: {
+        [Op.and]: [{ ...sequelize.getWhere(query) }, { binit_id: query.boardId }],
+      },
     });
   };
 
-  Board.searchList = async function (query, pager, BoardFile) {
-    let { field = 'id', sort = 'desc', boardId } = query;
+  Board.searchList = async function (query, BoardFile, BoardInit) {
+    let { field, sort, boardId, page } = query;
+    if (!boardId) {
+      let { id } = await BoardInit.findOne({
+        order: [['id', 'asc']],
+        attributes: ['id'],
+        limit: 1,
+        offset: 1,
+      });
+      boardId = id;
+      query.boardId = boardId;
+    }
+    // pager Query
+    const totalRecord = await this.getCount(query);
+    const pager = createPager(page, totalRecord, (_listCnt = 5), (_pagerCnt = 3));
+
     const rs = await this.findAll({
-      order: [[field || 'id', sort || 'desc']],
+      order: [[field, sort]],
       offset: pager.startIdx,
       limit: pager.listCnt,
-      where: { ...sequelize.getWhere(query), binit_id: boardId },
+      where: {
+        [Op.and]: [{ ...sequelize.getWhere(query) }, { binit_id: boardId }],
+      },
       include: [{ model: BoardFile, attributes: ['saveName'] }],
     });
     const lists = rs
@@ -94,7 +114,8 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         delete v.BoardFiles;
         return v;
       });
-    return lists;
+
+    return { lists, pager, totalRecord: numeral(pager.totalRecord).format() };
   };
 
   return Board;

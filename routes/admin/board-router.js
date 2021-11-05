@@ -1,14 +1,10 @@
-const path = require('path');
 const express = require('express');
 const createError = require('http-errors');
-const numeral = require('numeral');
 const router = express.Router();
-const { relPath, dateFormat } = require('../../modules/util');
 const boardInit = require('../../middlewares/boardinit-mw');
 const uploader = require('../../middlewares/multer-mw');
 const afterUploader = require('../../middlewares/after-multer-mw');
-const pager = require('../../middlewares/pager-mw');
-const { Board, BoardFile } = require('../../models');
+const { Board, BoardFile, BoardInit } = require('../../models');
 
 // 신규글 작성
 router.get('/', boardInit('query'), (req, res, next) => {
@@ -19,18 +15,23 @@ router.get('/', boardInit('query'), (req, res, next) => {
 });
 
 // 리스트
-router.get('/', boardInit('query'), pager(Board), async (req, res, next) => {
+router.get('/', boardInit('query'), async (req, res, next) => {
   try {
-    const { type, field = 'id', search = '', sort = 'desc' } = req.query;
-    req.query.field = field;
-    req.query.search = search;
-    req.query.boardId = 1;
-    const lists = await Board.searchList(req.query, req.pager, BoardFile);
+    req.query.field = req.query.field || 'id';
+    req.query.search = req.query.search || '';
+    req.query.sort = req.query.sort || 'desc';
+    req.query.page = req.query.page || 1;
+    const { type, field, search, sort } = req.query;
+    const { lists, pager, totalRecord } = await Board.searchList(
+      req.query,
+      BoardFile,
+      BoardInit
+    );
     res.render('admin/board/board-list', {
       type,
       lists,
-      numeral,
-      pager: req.pager,
+      pager,
+      totalRecord,
       field,
       sort,
       search,
