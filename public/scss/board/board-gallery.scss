@@ -1,8 +1,8 @@
 @import '../variables';
 @import '../mixins';
 
-.board-container {
-  &.gallery-type.list-page {
+.board-container.gallery-type {
+  &.list-page {
     overflow-x: hidden;
     .list-wrap {
       // list페이지
@@ -10,13 +10,13 @@
       width: 101%;
       .list {
         cursor: pointer;
-        overflow: hidden;
         border: 1px solid $light-color;
         border-radius: 6px;
         width: 24%;
         padding: 0.5%;
         margin-right: 1%;
         margin-bottom: 1%;
+        overflow: hidden;
         @include rel;
         @include LG {
           width: 32.3333%;
@@ -57,12 +57,12 @@
       }
     }
   }
-  &.default-type {
+  &.view-page {
     .td-content {
       padding: inherit 0;
       > div {
         border: 1px solid $light-color;
-        min-width: 200px;
+        min-height: 200px;
       }
     }
   }
