@@ -18,7 +18,7 @@
         margin-right: 1%;
         margin-bottom: 1%;
         @include rel;
-        @include LG { 
+        @include LG {
           width: 32.3333%;
         }
         @include MD {
@@ -54,6 +54,15 @@
             opacity: 0.6;
           }
         }
+      }
+    }
+  }
+  &.default-type {
+    .td-content {
+      padding: inherit 0;
+      > div {
+        border: 1px solid $light-color;
+        min-width: 200px;
       }
     }
   }
