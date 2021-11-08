@@ -1,0 +1,25 @@
+<script>
+  const req = [{ name: '홍길동', age: 25}, {name: '홍길만', age: 28}]
+  const addQuery = [{ age: 25}, { age: 28}]
+
+  for (let value of req) {
+      let k = Object.keys(value);
+      let [v] = Object.values(value);
+      addQuery[k] = addQuery[k] || v
+
+      console.log(k);
+
+      console.log(Object.keys(value));
+
+      console.log(addQuery[k])
+
+      console.log(addQuery);
+
+      console.log(k)
+
+      console.log(req);
+    }
+
+  
+
+</script>
