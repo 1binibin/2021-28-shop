@@ -30,7 +30,7 @@ router.get('/', boardInit('query'), queries(), async (req, res, next) => {
 });
 
 // 상세수정
-router.get('/:id', boardInit('query'), queries(), (req, res, next) => {
+router.get('/:id', boardInit(), queries(), (req, res, next) => {
   const { type, boardType } = req.query;
   if (type === 'update') {
     res.render('admin/board/board-form', { css: 'admin-board', boardType });
@@ -38,7 +38,7 @@ router.get('/:id', boardInit('query'), queries(), (req, res, next) => {
 });
 
 // 상세보기
-router.get('/:id', boardInit('query'), queries(), async (req, res, next) => {
+router.get('/:id', boardInit(), queries(), async (req, res, next) => {
   try {
     const id = req.params.id;
     const lists = await Board.findAll({
