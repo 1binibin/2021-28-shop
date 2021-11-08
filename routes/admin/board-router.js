@@ -5,8 +5,8 @@ const router = express.Router();
 const boardInit = require('../../middlewares/boardinit-mw');
 const uploader = require('../../middlewares/multer-mw');
 const afterUploader = require('../../middlewares/after-multer-mw');
-const queries = require('../../middlewares/query-mw');
 const counter = require('../../middlewares/board-counter-mw');
+const queries = require('../../middlewares/query-mw');
 const { Board, BoardFile, BoardInit } = require('../../models');
 const { moveFile } = require('../../modules/util');
 
@@ -29,19 +29,23 @@ router.get('/', boardInit(), queries(), async (req, res, next) => {
 });
 
 // 상세수정
-router.get('/:id', boardInit(), queries(), (req, res, next) => {
+router.get('/:id', boardInit(), queries(), counter, async (req, res, next) => {
   const { type } = req.query;
   if (type === 'update') {
+    const lists = await Board.findAll({
+      where: { id: req.params.id },
+      include: [{ model: BoardFile }],
+    });
+    // res.json(Board.getViewData(lists)[0]);
+    res.render('admin/board/board-update', { list: Board.getViewData(lists)[0] });
   } else next();
 });
 
 // 상세보기
-router.get('/:id', boardInit(), queries(), counter, async (req, res, next) => {
+router.get('/:id', boardInit(), queries(), async (req, res, next) => {
   try {
-    const { type, boardType } = req.query;
-    const id = req.params.id;
     const lists = await Board.findAll({
-      where: { id },
+      where: { id: req.params.id },
       include: [{ model: BoardFile }],
     });
     // res.json(Board.getViewData(lists));
@@ -75,24 +79,17 @@ router.put('/', (req, res, next) => {
   res.send('/admin/board:PUT');
 });
 
-// 게시글 삭제
 router.delete('/', boardInit(), queries('body'), async (req, res, next) => {
-  try {
-    await Board.destroy({ where: { id: req.body.id } });
-    const files = await BoardFile.findAll({
-      attrbutes: ['saveName'],
-      where: { board_id: req.body.id },
-    });
-    await BoardFile.destroy({ where: { board_id: req.body.id } });
-    for (let { saveName } of files) {
-      await moveFile(saveName);
-    }
-
-    // res.send('/admin/board:DELETE');
-    res.redirect(res.locals.goList);
-  } catch (err) {
-    next(createError(err));
+  await Board.destroy({ where: { id: req.body.id } });
+  const files = await BoardFile.findAll({
+    attributes: ['saveName'],
+    where: { board_id: req.body.id },
+  });
+  await BoardFile.destroy({ where: { board_id: req.body.id } });
+  for (let { saveName } of files) {
+    await moveFile(saveName);
   }
+  res.redirect(res.locals.goList);
 });
 
 module.exports = { name: '/board', router };
