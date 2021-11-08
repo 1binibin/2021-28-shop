@@ -24,6 +24,10 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       content: {
         type: DataTypes.TEXT,
       },
+      readCounter: {
+        type: DataTypes.INTEGER(10).UNSIGNED,
+        defaultValue: 0,
+      },
     },
     {
       charset: 'utf8',
@@ -62,6 +66,15 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       onDelete: 'CASCADE',
     });
     Board.hasMany(models.BoardComment, {
+      foreignKey: {
+        name: 'board_id',
+        allowNull: false,
+      },
+      sourceKey: 'id',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    });
+    Board.hasMany(models.BoardCounter, {
       foreignKey: {
         name: 'board_id',
         allowNull: false,

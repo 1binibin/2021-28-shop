@@ -6,6 +6,7 @@ const boardInit = require('../../middlewares/boardinit-mw');
 const uploader = require('../../middlewares/multer-mw');
 const afterUploader = require('../../middlewares/after-multer-mw');
 const queries = require('../../middlewares/query-mw');
+const counter = require('../../middlewares/board-counter-mw');
 const { Board, BoardFile, BoardInit } = require('../../models');
 
 // 신규글 작성
@@ -34,7 +35,7 @@ router.get('/:id', boardInit(), queries(), (req, res, next) => {
 });
 
 // 상세보기
-router.get('/:id', boardInit(), queries(), async (req, res, next) => {
+router.get('/:id', boardInit(), queries(), counter, async (req, res, next) => {
   try {
     const { type, boardType } = req.query;
     const id = req.params.id;
