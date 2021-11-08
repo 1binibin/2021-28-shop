@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/css/<%= currents[1] %>-<%= boardType %>.css">
 <article class="board-container default-type view-page">
-  <form action="/<%= currents[0] %>/<%= currents[1] %>" method="post" enctype="multipart/form-data" name="galleryForm">
+  <form action="<%= goPath %>>" method="post" enctype="multipart/form-data" name="galleryForm">
     <input type="hidden" name="boardId" value="<%= boardId %>">
     <table class="table border-bottom">
       <tbody>
@@ -25,7 +25,7 @@
         <tr>
           <td>이미지 첨부</td>
           <td>
-            <% for(let i=0; i< useImg ; i++) { %> 
+            <% for(let i=0; i<useImg; i++) { %> 
               <input type="file" name="img" class="form-control-file mb-2">
             <% } %>
           </td>
@@ -35,7 +35,7 @@
         <tr>
           <td>파일 첨부</td>
           <td>
-            <% for(let i=0; i< useFile; i++) { %> 
+            <% for(let i=0; i<useFile; i++) { %> 
               <input type="file" name="pds" class="form-control-file mb-2">
             <% } %>
           </td>

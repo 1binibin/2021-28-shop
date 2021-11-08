@@ -1,13 +1,13 @@
 <link rel="stylesheet" href="/css/<%= currents[1] %>-<%= boardType %>.css">
 <article class="board-container default-type list-page">
   <div class="my-2">
-        <div class="mb-2">총 레코드: <%= totalRecord %>개</div>
-        <div class="d-flex">
-          <%- include('../inc/search.ejs') %>
-          <%- include('../inc/sort.ejs') %>
-          <a href="<%= goList %>&type=create" class="btn btn-primary ml-auto">게시글작성</a>
-        </div>
-      </div>
+    <div class="mb-2">총 레코드: <%= totalRecord %>개</div>
+    <div class="d-flex">
+      <%- include('../inc/search.ejs') %> 
+      <%- include('../inc/sort.ejs') %> 
+      <a href="<%= goList %>&type=create" class="btn btn-primary ml-auto">게시글 작성</a>
+    </div>
+  </div>
   <table class="table text-center border-bottom">
     <thead class="thead-dark">
       <tr>
@@ -19,22 +19,27 @@
       </tr>
     </thead>
     <tbody>
-      <% for(let v of lists) { %>
+      <%
+        let i = 0; 
+        for(let v of lists) {
+        %> 
       <tr>
-        <td><%= v.id %></td>
+        <td>
+          <%= totalRecord - (page -1) * 5 - i++%>
+        </td>
         <td class="text-left">
           <a href="<%= goPath %>/<%= v.id %>?<%= goQuery %>"><%= v.title %></a>
         </td>
         <td><%= v.writer %></td>
         <td><%= v.updatedAt %></td>
-        <td>10</td>
+        <td>1</td>
       </tr>
       <% } %>
     </tbody>
   </table>
   <%- include('../inc/pager.ejs', pager) %>
   <div class="text-center my-4">
-    <a href="/<%= goList %>&type=create" class="btn btn-primary">글작성</a>
+    <a href="<%= goList %>&type=create" class="btn btn-primary">글작성</a>
   </div>
 </article>
 <script src="/js/<%= currents[1] %>/<%= boardType %>-list.js"></script>

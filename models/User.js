@@ -130,7 +130,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     const pager = createPager(page, totalRecord, (_listCnt = 5), (_pagerCnt = 3));
     // find Query
     const rs = await this.findAll({
-      order: [[field || 'id', sort || 'desc']],
+      order: [[field * 1 || 'id', sort || 'desc']],
       offset: pager.startIdx,
       limit: pager.listCnt,
       where: sequelize.getWhere(query),
