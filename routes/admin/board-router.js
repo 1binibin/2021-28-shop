@@ -8,6 +8,7 @@ const afterUploader = require('../../middlewares/after-multer-mw');
 const queries = require('../../middlewares/query-mw');
 const counter = require('../../middlewares/board-counter-mw');
 const { Board, BoardFile, BoardInit } = require('../../models');
+const { moveFile } = require('../../modules/util');
 
 // 신규글 작성
 router.get('/', boardInit(), queries(), (req, res, next) => {
@@ -74,8 +75,24 @@ router.put('/', (req, res, next) => {
   res.send('/admin/board:PUT');
 });
 
-router.delete('/', (req, res, next) => {
-  res.send('/admin/board:DELETE');
+// 게시글 삭제
+router.delete('/', boardInit(), queries('body'), async (req, res, next) => {
+  try {
+    await Board.destroy({ where: { id: req.body.id } });
+    const files = await BoardFile.findAll({
+      attrbutes: ['saveName'],
+      where: { board_id: req.body.id },
+    });
+    await BoardFile.destroy({ where: { board_id: req.body.id } });
+    for (let { saveName } of files) {
+      await moveFile(saveName);
+    }
+
+    // res.send('/admin/board:DELETE');
+    res.redirect(res.locals.goList);
+  } catch (err) {
+    next(createError(err));
+  }
 });
 
 module.exports = { name: '/board', router };

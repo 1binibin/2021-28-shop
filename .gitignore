@@ -1,4 +1,5 @@
 storages
+storages-remove
 .env.dev
 .env.pro
 
