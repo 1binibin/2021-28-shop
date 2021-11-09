@@ -51,12 +51,11 @@ router.post('/', async (req, res, next) => {
 // 회원 수정
 router.put('/', async (req, res, next) => {
   try {
-    const [rs] = await User.update(req.body, {
+    await User.update(req.body, {
       where: { id: req.body.id },
       individualHooks: true,
     });
-    if (rs) res.send(alert('회원수정이 완료되었습니다.', '/admin/user'));
-    else res.send(alert('처리되지 않았습니다', '/admin/user'));
+    res.send(alert('회원수정이 완료되었습니다.', '/admin/user'));
   } catch (err) {
     next(createError(err));
   }

@@ -14,6 +14,7 @@ const { moveFile } = require('../../modules/util');
 router.get('/', boardInit(), queries(), (req, res, next) => {
   const { type } = req.query;
   if (type === 'create') {
+    // res.json(req.query);
     res.render('admin/board/board-form', { type, binit: req.binit });
   } else next();
 });
@@ -68,6 +69,7 @@ router.post(
         await Board.update(req.body, { where: { id: req.body.id } });
         req.files.forEach((file) => (file.board_id = req.body.id));
         const files = await BoardFile.bulkCreate(req.files);
+        // console.log(req.body);
         // res.json({ file: req.files, req: req.body, locals: res.locals });
         res.redirect(res.locals.goList);
       } else {
@@ -76,6 +78,8 @@ router.post(
         const board = await Board.create(req.body);
         req.files.forEach((file) => (file.board_id = board.id));
         const files = await BoardFile.bulkCreate(req.files);
+        // console.log(req.body);
+        // res.json({ file: req.files, req: req.body, locals: res.locals });
         res.redirect('/admin/board?boardId=' + res.locals.boardId);
       }
     } catch (err) {
