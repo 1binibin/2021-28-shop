@@ -44,7 +44,7 @@ router.get('/:id', async (req, res, next) => {
 // 회원 저장
 router.post('/', async (req, res, next) => {
   try {
-    const user = await User.create(req.body);
+    await User.create(req.body);
     res.send(alert('회원가입이 완료되었습니다.', '/admin/user'));
   } catch (err) {
     next(createError(err));

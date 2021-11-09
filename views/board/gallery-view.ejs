@@ -18,8 +18,7 @@
         <td class="title">작성일</td>
         <td class="content"><%= list.updatedAt %></td>
       </tr>
-      <% for(let v of list.files) { %>
-        <% if(v.type === 'I') { %>
+      <% for(let v of list.imgs) { %>
           <tr>
             <td colspan="2">
               <div class="file-img my-2">
@@ -27,7 +26,6 @@
               </div>
             </td>
           </tr>
-        <% } %>
       <% } %>
       <tr>
         <td colspan="2" class="td-content">
@@ -35,7 +33,6 @@
         </td>
       </tr>
       <% for(let v of list.files) { %>
-        <% if(v.type === 'F') { %>
           <tr>
             <td class="title">첨부 파일</td>
             <td class="content">
@@ -45,7 +42,6 @@
             </td>
           </tr>
         <% } %>
-      <% } %>
     </tbody>
   </table>
   <%- include('./inc/view-bottom.ejs', { id: list.id }) %>
