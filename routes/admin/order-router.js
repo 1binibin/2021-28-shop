@@ -1,9 +1,10 @@
 const path = require('path');
 const express = require('express');
 const router = express.Router();
+const { isAdmin } = require('../../middlewares/auth-mw');
 const { error } = require('../../modules/util');
 
-router.get('/', (req, res, next) => {
+router.get('/', isAdmin(8), (req, res, next) => {
   if (req.query.type === 'update') {
     res.render('admin/order/order-form');
   } else {

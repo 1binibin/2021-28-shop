@@ -73,11 +73,11 @@ router.post(
         // res.json({ file: req.files, req: req.body, locals: res.locals });
         res.redirect(res.locals.goList);
       } else {
-        req.body.user_id = 1; // 회원작업 후 수정 예정
+        req.body.user_id = req.user.id; // 회원작업 후 수정 예정
         req.body.binit_id = res.locals.boardId;
         const board = await Board.create(req.body);
         req.files.forEach((file) => (file.board_id = board.id));
-        const files = await BoardFile.bulkCreate(req.files);
+        await BoardFile.bulkCreate(req.files);
         // console.log(req.body);
         // res.json({ file: req.files, req: req.body, locals: res.locals });
         res.redirect('/admin/board?boardId=' + res.locals.boardId);
