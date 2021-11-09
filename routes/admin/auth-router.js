@@ -3,12 +3,16 @@ const express = require('express');
 const router = express.Router();
 const { error } = require('../../modules/util');
 
-router.get('/', (req, res, next) => {
+router.get('/login', (req, res, next) => {
   res.render('admin/auth/login', { css: 'admin-login' });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/login', (req, res, next) => {
   res.send('login');
 });
 
-module.exports = { name: '/login', router };
+router.get('/logout', (req, res, next) => {
+  res.render('logout');
+});
+
+module.exports = { name: '/auth', router };

@@ -1,4 +1,4 @@
-module.exports = (sequelize, { DataTypes, Op }) => {
+module.exports = (sequelize, DataTypes) => {
   const BoardCounter = sequelize.define(
     'BoardCounter',
     {

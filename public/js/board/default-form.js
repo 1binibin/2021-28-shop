@@ -15,12 +15,12 @@ function onFormSubmit(e) {
   }
   if (writer === '') {
     alert('작성자는 필수사항 입니다.');
-    writerEl.focus();
+    titleEl.focus();
     return false;
   }
   if (content === '') {
     alert('내용은 필수사항 입니다.');
-    contentEl.focus();
+    titleEl.focus();
     return false;
   }
   f.submit();

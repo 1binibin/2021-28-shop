@@ -21,7 +21,7 @@ router.get('/', boardInit(), queries(), (req, res, next) => {
 // 리스트
 router.get('/', boardInit(), queries(), async (req, res, next) => {
   try {
-    const { lists, pager, totalRecord } = await Board.getLists(req.query, BoardFile, BoardInit);
+    const { lists, pager, totalRecord } = await Board.getLists(req.query, BoardFile);
     res.render('admin/board/board-list', { lists, pager, totalRecord });
   } catch (err) {
     next(createError(err));
@@ -55,7 +55,7 @@ router.get('/:id', boardInit(), queries(), async (req, res, next) => {
   }
 });
 
-// 게시물 저장 / 수정
+// 게시물 저장/수정
 router.post(
   '/',
   uploader.fields([{ name: 'img' }, { name: 'pds' }]),

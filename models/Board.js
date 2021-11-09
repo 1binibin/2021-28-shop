@@ -112,7 +112,6 @@ module.exports = (sequelize, { DataTypes, Op }) => {
             if (obj.type === 'F') v.files.push(obj);
             else v.imgs.push(obj);
           }
-          v.files = _.sortBy(v.files, ['type']);
         }
         delete v.createdAt;
         delete v.deletedAt;
@@ -124,7 +123,6 @@ module.exports = (sequelize, { DataTypes, Op }) => {
 
   Board.getLists = async function (query, BoardFile) {
     let { field, sort, boardId, page, boardType } = query;
-
     let listCnt = boardType === 'gallery' ? 12 : 5;
     let pagerCnt = 5;
     const totalRecord = await this.getCount(query);

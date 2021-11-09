@@ -1,12 +1,13 @@
+const path = require('path');
 const express = require('express');
 const router = express.Router();
 const createError = require('http-errors');
+const queries = require('../../middlewares/query-mw');
 const { telNumber, alert, getSeparateArray } = require('../../modules/util');
 const { User } = require('../../models');
-const queries = require('../../middlewares/query-mw');
 
 // 회원 등록 화면
-router.get('/', (req, res, next) => {
+router.get('/', queries(), (req, res, next) => {
   if (req.query.type === 'create') {
     const ejs = { telNumber };
     res.render('admin/user/user-form', ejs);
@@ -16,13 +17,9 @@ router.get('/', (req, res, next) => {
 // 회원리스트
 router.get('/', queries(), async (req, res, next) => {
   try {
+    let { field, search, sort, status } = req.query;
     const { lists, pager, totalRecord } = await User.getLists(req.query);
-    const ejs = {
-      telNumber,
-      pager,
-      totalRecord,
-      lists,
-    };
+    const ejs = { telNumber, pager, lists, totalRecord };
     res.render('admin/user/user-list', ejs);
   } catch (err) {
     next(createError(err));
@@ -30,7 +27,7 @@ router.get('/', queries(), async (req, res, next) => {
 });
 
 // 회원 수정 화면
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', queries(), async (req, res, next) => {
   try {
     const user = await User.findOne({ where: { id: req.params.id } });
     user.tel = getSeparateArray(user.tel, '-');
@@ -44,7 +41,7 @@ router.get('/:id', async (req, res, next) => {
 // 회원 저장
 router.post('/', async (req, res, next) => {
   try {
-    await User.create(req.body);
+    const user = await User.create(req.body);
     res.send(alert('회원가입이 완료되었습니다.', '/admin/user'));
   } catch (err) {
     next(createError(err));
