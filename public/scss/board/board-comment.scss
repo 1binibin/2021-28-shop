@@ -4,5 +4,43 @@
 .comment-wrapper {
   margin: 1.5em 0;
   padding: 1em 0;
-  border-top: 3px double $grey-color;
+  border-top: 4px double $success-color;
+  .comment-create {
+    @include flex;
+    input[name='writer'] {
+      width: 150px;
+      margin-right: 0.5em;
+    }
+    input[name='comment'] {
+      flex-grow: 1;
+      margin-right: 0.5em;
+    }
+    button {
+      flex-shrink: 0;
+    }
+  }
+  .comment-wrap {
+    margin-top: 1em;
+    border-top: 1px solid #ccc;
+    .comment-list {
+      border-bottom: 1px solid #ccc;
+      padding: 0.5em;
+      @include flex($h: space-between, $v: flex-start);
+      .content {
+        .writer {
+          font-weight: bold;
+          margin-bottom: 0.5em;
+        }
+        .comment {
+          padding-left: 0.5em;
+        }
+      }
+      .date {
+        width: 140px;
+        font-size: 0.875em;
+        color: #aaa;
+        text-align: right;
+      }
+    }
+  }
 }
