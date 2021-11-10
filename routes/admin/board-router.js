@@ -93,6 +93,7 @@ router.delete('/', boardInit(), queries('body'), async (req, res, next) => {
       where: { board_id: req.body.id },
     });
     await BoardFile.destroy({ where: { board_id: req.body.id } });
+    await BoardComment.destroy({ where: { board_id: req.body.id } });
     for (let { saveName } of files) {
       await moveFile(saveName);
     }

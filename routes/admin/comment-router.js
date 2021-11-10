@@ -5,7 +5,6 @@ const router = express.Router();
 const { error, absPath } = require('../../modules/util');
 const { BoardComment } = require('../../models');
 const queries = require('../../middlewares/query-mw');
-const boardinit = require('../../middlewares/boardinit-mw');
 
 router.post('/', queries('body'), async (req, res, next) => {
   try {
