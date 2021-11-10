@@ -1,2 +1,81 @@
-[{"id":"j1_1","text":"","icon":true,"li_attr":{"id":false,"charset":"UTF-8"},"a_attr":{"href":"#","id":"j1_1_anchor"},"state":{"loaded":true,"opened":false,"selected":false,"disabled":false},"data":{},"children":[]},{"id":"j1_2","text":"","icon":true,"li_attr":{"id":false,"http-equiv":"X-UA-Compatible","content":"IE=edge"},"a_attr":{"href":"#","id":"j1_2_anchor"},"state":{"loaded":true,"opened":false,"selected":false,"disabled":false},"data":{},"children":[]},{"id":"j1_3","text":"","icon":true,"li_attr":{"id":false,"name":"viewport","content":"width=device-width, initial-scale=1.0"},"a_attr":{"href":"#","id":"j1_3_anchor"},"state":{"loaded":true,"opened":false,"selected":true,"disabled":false},"data":{},"children":[]},{"id":"j1_4","text":"404 Error","icon":true,"li_attr":{"id":false},"a_attr":{"href":"#","id":"j1_4_anchor"},"state":{"loaded":true,"opened":false,"selected":false,"disabled":false},"data":{},"children":[]},{"id":"j1_5","text":"\n\t\t.wrapper {max-width: 600px; margin: auto; height: 100vh; padding-top: 15%;}\n\t\t.wrapper .icon-wrap {display: flex; align-items: flex-end; border-bottom: 3px double #ccc; padding-bottom: 1em;}\n\t\t.wrapper .icon-wrap .img-wp img {width: 100px;}\n\t\t.wrapper .icon-wrap .msg-wp {font-size: 1.5em; padding-left: 1em;}\n\t\t.wrapper .icon-wrap .msg-wp :last-child {font-size: .75em; color: #555;}\n\t\t.wrapper .content-wrap {padding: .75em 0; line-height: 1.25; color: #333; margin-bottom: 1em;}\n\t\t.wrapper .content-wrap b {color: #777;}\n\t","icon":true,"li_attr":{"id":false},"a_attr":{"href":"#","id":"j1_5_anchor"},"state":{"loaded":true,"opened":false,"selected":false,"disabled":false},"data":{},"children":[]},{"id":"j1_6","text":"\n\t\t<div class=\"icon-wrap\">\n\t\t\t<div class=\"img-wp\">\n\t\t\t\t<img src=\"/img/error/404.png\" alt=\"icon\">\n\t\t\t</div>\n\t\t\t<div class=\"msg-wp\">\n\t\t\t\t<div>ERROR 404</div>\n\t\t\t\t<div>Not Found</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"content-wrap\">경로를 찾을 수 없습니다.</div>\n\t\t<div class=\"link-wrap\"><a href=\"/\">메인으로 돌아가기</a></div>\n\t","icon":true,"li_attr":{"id":false,"class":"wrapper"},"a_attr":{"href":"#","id":"j1_6_anchor"},"state":{"loaded":true,"opened":false,"selected":false,"disabled":false},"data":{},"children":[]}]
-
+[
+  {
+    "id": "j1_1",
+    "text": "Shop",
+    "icon": true,
+    "li_attr": { "id": "j1_1" },
+    "a_attr": { "href": "#", "id": "j1_1_anchor" },
+    "state": { "loaded": true, "opened": true, "selected": false, "disabled": false },
+    "data": {},
+    "children": [
+      {
+        "id": "j1_2",
+        "text": "남성의류",
+        "icon": true,
+        "li_attr": { "id": "j1_2" },
+        "a_attr": { "href": "#", "id": "j1_2_anchor" },
+        "state": { "loaded": true, "opened": true, "selected": false, "disabled": false },
+        "data": {},
+        "children": [
+          {
+            "id": "j1_5",
+            "text": "상의",
+            "icon": true,
+            "li_attr": { "id": "j1_5" },
+            "a_attr": { "href": "#", "id": "j1_5_anchor" },
+            "state": { "loaded": true, "opened": false, "selected": false, "disabled": false },
+            "data": {},
+            "children": [],
+            "type": "default"
+          },
+          {
+            "id": "j1_7",
+            "text": "하의",
+            "icon": true,
+            "li_attr": { "id": "j1_7" },
+            "a_attr": { "href": "#", "id": "j1_7_anchor" },
+            "state": { "loaded": true, "opened": false, "selected": false, "disabled": false },
+            "data": {},
+            "children": [],
+            "type": "default"
+          },
+          {
+            "id": "j1_9",
+            "text": "잡화",
+            "icon": true,
+            "li_attr": { "id": "j1_9" },
+            "a_attr": { "href": "#", "id": "j1_9_anchor" },
+            "state": { "loaded": true, "opened": false, "selected": true, "disabled": false },
+            "data": {},
+            "children": [],
+            "type": "default"
+          }
+        ],
+        "type": "default"
+      },
+      {
+        "id": "j1_3",
+        "text": "여성의류",
+        "icon": true,
+        "li_attr": { "id": "j1_3" },
+        "a_attr": { "href": "#", "id": "j1_3_anchor" },
+        "state": { "loaded": true, "opened": false, "selected": false, "disabled": false },
+        "data": {},
+        "children": [],
+        "type": "default"
+      },
+      {
+        "id": "j1_4",
+        "text": "아동의류",
+        "icon": true,
+        "li_attr": { "id": "j1_4" },
+        "a_attr": { "href": "#", "id": "j1_4_anchor" },
+        "state": { "loaded": true, "opened": false, "selected": false, "disabled": false },
+        "data": {},
+        "children": [],
+        "type": "default"
+      }
+    ],
+    "type": "default"
+  }
+]

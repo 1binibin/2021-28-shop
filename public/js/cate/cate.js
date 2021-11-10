@@ -1,5 +1,11 @@
 var core = {};
-var plugins = ['contextmenu', 'dnd', 'search', 'state', 'wholerow', 'changed'];
+var plugins = ['contextmenu', 'dnd', 'search', 'state', 'wholerow', 'changed', 'types'];
+
+var types = {
+  default: {
+    max_depth: 2,
+  },
+};
 
 core.themes = {
   variant: 'large',
@@ -17,16 +23,37 @@ core.data = {
   },
 };
 
-function onChangedTree(e, data) {
-  var json = $('#jstreeWrap').jstree(true).get_json('#');
+function onCreateTree(e, data) {
   axios
-    .post('/api/tree', { json })
+    .post('/api/tree', { id: data.node.id })
+    .then(onUpdateTree)
     .then(function (r) {
-      console.log(r);
+      $('#jstreeWrap').jstree().refresh();
     })
     .catch(function (err) {
       console.log(err);
     });
 }
 
-$('#jstreeWrap').jstree({ core: core, plugins: plugins }).on('changed.jstree', onChangedTree);
+function onDeleteTree(e, data) {
+  console.log(data.node.id);
+}
+
+function onUpdateTree() {
+  // var json = $('#jstreeWrap').jstree(true).get_json('#');
+  axios
+    .put('/api/tree', { node: $('#jstreeWrap').jstree(true).get_json('#') })
+    .then(function (r) {
+      $('#jstreeWrap').jstree().refresh();
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+}
+
+$('#jstreeWrap')
+  .jstree({ core: core, plugins: plugins, types })
+  .on('create_node.jstree', onCreateTree)
+  .on('rename_node.jstree', onUpdateTree)
+  .on('move_node.jstree', onUpdateTree);
+// .on('delete_node.jstree', onDeleteTree);
