@@ -17,7 +17,7 @@ router.post('/login', async (req, res, next) => {
       else {
         req.login(user, (err) => {
           if (err) return next(err);
-          else return res.send(alert('로그인 되었습니다.', '/admin/auth/login'));
+          else return res.send(alert('로그인 되었습니다.', '/admin'));
         });
       }
     };
