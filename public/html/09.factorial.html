@@ -1,0 +1,54 @@
+<script>
+  /* function findChild(_obj, arr) {
+    if(_obj.children) {
+      for(let v of _obj.children) {
+        findChild(v, arr)
+      }
+    }
+    arr.push(_obj.id);
+    return arr;
+  } */
+
+  function findObj(_obj, id) {
+    console.log("처음")
+    _obj =  Object.entries(_obj)
+    id = _obj[1].id
+    if (_obj[0].id !== id) {
+      if (_obj.children) {
+        for (let v of _obj.children) {
+          findObj(v, id);
+        }
+      }
+      console.log("return false");
+      return false;
+    }
+    console.log("마지막 return obj")
+    return Object(_obj);
+  }
+
+  
+  const obj = {
+    id: 1,
+    children: [{
+      id: 2,
+      children: [{
+          id: 6
+        }]
+      },
+      {
+        id: 3,
+        children: [{
+            id: 4
+          },
+          {
+            id: 5
+          },
+        ]
+      }
+    ]
+  };
+  
+  // console.log(Object.entries(obj));
+  console.log(findObj(obj, 3));
+  // console.log(findChild(obj, []))
+</script>

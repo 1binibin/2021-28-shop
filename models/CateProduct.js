@@ -11,7 +11,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         allowNull: false,
       },
       cate_id: {
-        type: DataTypes.INTEGER(10).UNSIGNED,
+        type: DataTypes.STRING(50),
         primaryKey: true,
         allowNull: false,
       },
