@@ -11,21 +11,19 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         primaryKey: true,
         allowNull: false,
       },
-      name: {
-        type: DataTypes.STRING(255),
-        allowNull: false,
-      },
       title: {
         type: DataTypes.STRING(255),
         allowNull: false,
       },
       priceOrigin: {
         type: DataTypes.INTEGER(10),
-        allowNull: true,
+        allowNull: false,
+        defaultValue: 0,
       },
       priceSale: {
         type: DataTypes.INTEGER(10),
-        allowNull: true,
+        allowNull: false,
+        defaultValue: 0,
       },
       amount: {
         type: DataTypes.INTEGER(10),
