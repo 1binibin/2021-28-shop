@@ -1,7 +1,9 @@
 const path = require('path');
 const express = require('express');
 const router = express.Router();
+const escape = require('escape-html');
 const createError = require('http-errors');
+const { Product } = require('../../models');
 const { error } = require('../../modules/util');
 
 router.get('/', (req, res, next) => {
@@ -28,7 +30,9 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    res.json(req.body);
+    res.json({ body: req.body, content: escape(req.body.content) });
+    //req.body.content = escape(req.body.content)
+    //await Product.create(req.body)
     // res.redirect('/admin/prd');
   } catch (err) {
     next(createError(err));
