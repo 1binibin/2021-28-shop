@@ -3,7 +3,7 @@
 .prd-wrapper {
   &.list-wrapper {
     .btn-wrap {
-      padding: 1em 0 .5em 0;
+      padding: 1em 0 0.5em 0;
       @include flex($h: space-between, $v: center);
     }
     table {
@@ -33,13 +33,24 @@
         }
       }
       td.td-icon {
-        padding: .25em;
+        padding: 0.25em;
         height: 80px;
         img {
           max-width: 100%;
           max-height: 100%;
         }
+      }
     }
+  }
+  &.form-wrapper {
+    .small {
+      width: 200px;
+    }
+    .red {
+      color: red;
+    }
+
+    .content {
     }
   }
 }
