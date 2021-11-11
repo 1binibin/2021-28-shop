@@ -1,6 +1,8 @@
 // jsTree
+var allData = null;
+var selData = [];
 var core = {};
-var plugins = ['state', 'wholerow', 'changed', 'checkbox'];
+var plugins = ['wholerow', 'changed', 'checkbox'];
 
 core.themes = {
   variant: 'large',
@@ -10,12 +12,47 @@ core.themes = {
 core.check_callback = true;
 
 core.data = {
+  url: function (node) {
+    return '/api/tree';
+  },
   data: function (node) {
     return { id: node.id };
   },
 };
 
-// Quill
+$('#jstreeWrap')
+  .jstree({ core: core, plugins: plugins })
+  .on('changed.jstree', onChangeTree)
+  .on('loaded.jstree', onLoadedTree);
+
+function onLoadedTree(e, data) {
+  allData = data.instance._model.data;
+}
+
+function onChangeTree(e, data) {
+  const selectedTree = [];
+  for (var v of data.selected) {
+    if (!allData[v].children.length) selectedTree.push(v);
+  }
+  selData = selectedTree;
+}
+
+$('.prd-wrapper .bt-modal-close').click(onCloseModal);
+function onCloseModal() {
+  $('.prd-wrapper .modal-wrapper').hide();
+  var html = '';
+  for (var v of selData) {
+    html += '<div class="data">' + allData[v].text + '</div>';
+  }
+  $('.prd-wrapper .selected-tree').html(html);
+}
+
+$('.prd-wrapper .bt-cate').click(onClickCate);
+function onClickCate() {
+  $('.prd-wrapper .modal-wrapper').show();
+}
+/************* Quill ***************/
+
 var toolbarOptions = [
   ['bold', 'italic', 'underline', 'strike'], // toggled buttons
   ['blockquote', 'code-block'],
@@ -55,14 +92,4 @@ function onSubmitPrdCreateForm(e) {
   }
   this.content.value = quill.root.innerHTML;
   this.submit();
-}
-
-$('.form-wrapper .bt-cate').click(onClickCate);
-function onClickCate() {
-  axios
-    .get('/api/cate')
-    .then(function (r) {})
-    .catch(function (err) {
-      console.error;
-    });
 }
