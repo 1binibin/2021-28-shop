@@ -1,6 +1,6 @@
 const { alert } = require('../modules/util');
 
-const isAdmin = (_status = '7') => {
+const isAdmin = (_status = '') => {
   return (req, res, next) => {
     if (!req.user && req.path.includes('/auth/login')) next();
     else if (req.user && _status <= req.user.status) next();

@@ -30,7 +30,7 @@ function onChangedTree(e, data) {
 function onCreateTree(e, data) {
   axios
     .post('/api/tree', { id: data.node.id })
-    .then(onUpdateTree)
+    .then()
     .catch(function (err) {
       console.log(err);
     });
@@ -49,6 +49,7 @@ function onUpdateTree() {
   axios
     .put('/api/tree', { node: $('#jstreeWrap').jstree(true).get_json('#') })
     .then(function (r) {
+      console.log('update');
       $('#jstreeWrap').jstree().refresh();
     })
     .catch(function (err) {

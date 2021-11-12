@@ -26,7 +26,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       },
       readCounter: {
         type: DataTypes.INTEGER(10).UNSIGNED,
-        defaultValue: 0,
+        defaulValue: 0,
       },
     },
     {
@@ -104,7 +104,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         if (v.BoardFiles.length) {
           for (let file of v.BoardFiles) {
             let obj = {
-              thumbSrc: relPath(file.saveName),
+              thumbSrc: file.fileType === 'I' ? relPath(file.saveName) : null,
               name: file.oriName,
               id: file.id,
               type: file.fileType,
@@ -127,12 +127,16 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     let pagerCnt = 5;
     const totalRecord = await BoardComment.count({ where: { board_id: id } });
     const pager = createPager(page2 || 1, totalRecord, listCnt, pagerCnt);
-
     const lists = await this.findAll({
       where: { id },
       include: [
         { model: BoardFile },
-        { model: BoardComment, order: [['id', 'desc']], offset: pager.startIdx, limit: listCnt },
+        {
+          model: BoardComment,
+          order: [['id', 'desc']],
+          offset: pager.startIdx,
+          limit: listCnt,
+        },
       ],
     });
     return { lists, pager };
