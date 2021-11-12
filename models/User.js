@@ -136,7 +136,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
   });
 
   User.loginUser = async function (userid, userpw) {
-    const { BCRYPT_SALT: salt, BCRYPT_ROUND: rnd } = process.env;
+    const { BCRYPT_SALT: salt } = process.env;
     const user = await this.findOne({ where: { userid } });
     if (user && user.userpw) {
       const success = await bcrypt.compare(userpw + salt, user.userpw);
@@ -154,10 +154,10 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     let { field = 'id', sort = 'desc', page = 1 } = query;
     // pager Query
     const totalRecord = await this.getCount(query);
-    const pager = createPager(page, totalRecord, (_listCnt = 5), (_pagerCnt = 3));
+    const pager = createPager(page, totalRecord, (_listCnt = 5), (_pagerCnt = 5));
     // find Query
     const rs = await this.findAll({
-      order: [[field * 1 || 'id', sort || 'desc']],
+      order: [[field || 'id', sort || 'desc']],
       offset: pager.startIdx,
       limit: pager.listCnt,
       where: sequelize.getWhere(query),

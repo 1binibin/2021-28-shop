@@ -1,4 +1,4 @@
-module.exports = (sequelize, { DataTypes, Op }) => {
+module.exports = (sequelize, DataTypes) => {
   const BoardFile = sequelize.define(
     'BoardFile',
     {
@@ -40,7 +40,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
   );
 
   BoardFile.associate = (models) => {
-    BoardFile.belongsTo(models.BoardInit, {
+    BoardFile.belongsTo(models.Board, {
       foreignKey: {
         name: 'board_id',
         allowNull: false,
