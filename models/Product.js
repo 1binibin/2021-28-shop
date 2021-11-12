@@ -110,12 +110,17 @@ module.exports = (sequelize, { DataTypes, Op }) => {
           }
         } else {
           if (v.ProductFiles.length) {
-            v.img = {
-              thumbSrc: relPath(v.ProductFiles[0].saveName),
-              name: v.ProductFiles[0].oriName,
-              id: v.ProductFiles[0].id,
-              type: v.ProductFiles[0].fileType,
-            };
+            for (let file of v.ProductFiles) {
+              if (file.fileType === 'I') {
+                v.img = {
+                  thumbSrc: relPath(file.saveName),
+                  name: file.oriName,
+                  id: file.id,
+                  type: file.fileType,
+                };
+                break;
+              }
+            }
           }
         }
         delete v.createdAt;
@@ -127,7 +132,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
   };
 
   Product.getLists = async function (query, ProductFile) {
-    let { field, sort, page } = query;
+    let { field, sort, page, search } = query;
     let listCnt = 10;
     let pagerCnt = 5;
     const totalRecord = await this.getCount(query);
@@ -138,7 +143,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       offset: pager.startIdx,
       limit: pager.listCnt,
       where: sequelize.getWhere(query),
-      include: [{ model: ProductFile, attributes: ['saveName'] }],
+      include: [{ model: ProductFile, attributes: ['saveName', 'fileType'] }],
     });
     const lists = this.getViewData(rs);
 
