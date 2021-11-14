@@ -23,6 +23,7 @@ router.get('/', boardInit(), queries(), (req, res, next) => {
 router.get('/', boardInit(), queries(), async (req, res, next) => {
   try {
     const { lists, pager, totalRecord } = await Board.getLists(req.query, BoardFile);
+    // res.json(res.locals);
     res.render('admin/board/board-list', { lists, pager, totalRecord });
   } catch (err) {
     next(createError(err));
