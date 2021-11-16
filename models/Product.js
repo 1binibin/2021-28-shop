@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const { unescape } = require('html-escaper');
 const numeral = require('numeral');
-const { dateFormat, relPath } = require('../modules/util');
+const { dateFormat, relPath, relThumbPath } = require('../modules/util');
 const createPager = require('../modules/pager-init');
 
 module.exports = (sequelize, { DataTypes, Op }) => {
@@ -123,7 +123,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         v.priceOrigin = numeral(v.priceOrigin).format();
         v.priceSale = numeral(v.priceSale).format();
         let idx = _.findIndex(v.ProductFiles, (v2) => v2.fieldNum == '1' && v2.fileType == 'I');
-        v.img = idx > -1 ? relPath(v.ProductFiles[idx].saveName) : 'https://via.placeholder.com/120';
+        v.img = idx > -1 ? relThumbPath(v.ProductFiles[idx].saveName) : 'https://via.placeholder.com/120';
         delete v.createdAt;
         delete v.deletedAt;
         delete v.ProductFiles;
