@@ -9,6 +9,7 @@ const afterUploader = require('../../middlewares/after-multer-mw');
 const { moveFile } = require('../../modules/util');
 const queries = require('../../middlewares/query-mw');
 const { isAdmin } = require('../../middlewares/auth-mw');
+const sharpInit = require('../../middlewares/sharp-mw');
 
 router.get('/', queries(), (req, res, next) => {
   if (req.query.type === 'create') {
@@ -48,6 +49,7 @@ router.post(
     { name: 'detail_2' },
   ]),
   afterUploader(['img_1', 'img_2', 'img_3', 'img_4', 'img_5', 'detail_1', 'detail_2']),
+  sharpInit(300),
   queries('body'),
   async (req, res, next) => {
     try {

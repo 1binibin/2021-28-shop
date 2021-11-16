@@ -10,8 +10,8 @@ router.delete('/file/:id', isAdmin(8, 'API'), async (req, res, next) => {
     const modelName = req.query.modelName || 'BoardFile';
     const { id } = req.params;
     const { saveName } = await db[modelName].findOne({ where: { id }, attributes: ['saveName'] });
-    await db[modelName].destroy({ where: { id } });
     await moveFile(saveName);
+    await db[modelName].destroy({ where: { id } });
     res.status(200).json({ code: 200, result: 'success' });
   } catch (err) {
     next(createError(err));
