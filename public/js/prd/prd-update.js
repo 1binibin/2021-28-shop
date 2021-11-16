@@ -115,7 +115,10 @@ function onDeleteFile(id, el) {
   }
   function onSuccess(r) {
     if (r.data.code == 200) {
-      var html = '<input type="file" name="' + $(el).data('name') + '" class="form-control-file mb-2" />';
+      var html =
+        '<div class="file-wrap"><input type="file" name="' +
+        $(el).data('name') +
+        '" class="form-control-file my-2" /></div>';
       $(el).parent().after(html); // $(el).parent().parent().append(html);
       $(el).parent().remove();
     }

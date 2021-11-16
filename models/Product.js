@@ -97,20 +97,19 @@ module.exports = (sequelize, { DataTypes, Op }) => {
     data.content = unescape(data.content);
     data.imgs = [];
     data.details = [];
-      for (let i = 0; i <=5; i++) {
-        if(data.ProductFiles[i].fieldNum == (i + 1)) {
-          let obj = {
-            thumbSrc: relPath(file.saveName),
-            name: file.oriName,
-            id: file.id,
-            type: file.fileType,
-            fieldNum: file.fieldNum,
-          };
-          if (obj.type === 'F') data.details.push(obj);
-          else data.imgs.push(obj);
-        }
-        else 
+    if (data.ProductFiles.length) {
+      for (let file of data.ProductFiles) {
+        let obj = {
+          thumbSrc: relPath(file.saveName),
+          name: file.oriName,
+          id: file.id,
+          type: file.fileType,
+          fieldNum: file.fieldNum,
+        };
+        if (obj.type === 'F') data.details.push(obj);
+        else data.imgs.push(obj);
       }
+    }
     delete data.createdAt;
     delete data.deletedAt;
     delete data.ProductFiles;
@@ -123,9 +122,8 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       .map((v) => {
         v.priceOrigin = numeral(v.priceOrigin).format();
         v.priceSale = numeral(v.priceSale).format();
-        if (v.ProductFiles.fieldNum == '1' && v.ProductFiles.fieldType == 'I') {
-          v.img = relPath(file.saveName);
-        } else v.img = 'https://via.placeholder.com/120';
+        let idx = _.findIndex(v.ProductFiles, (v2) => v2.fieldNum == '1' && v2.fileType == 'I');
+        v.img = idx > -1 ? relPath(v.ProductFiles[idx].saveName) : 'https://via.placeholder.com/120';
         delete v.createdAt;
         delete v.deletedAt;
         delete v.ProductFiles;
