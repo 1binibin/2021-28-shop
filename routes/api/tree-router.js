@@ -17,7 +17,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.put('/', async (req, res, next) => {
+router.put('/', isAdmin(7), async (req, res, next) => {
   try {
     const tree = await fs.writeJSON(path.join(__dirname, '../../json/tree.json'), req.body.node);
     res.status(200).json({ success: true });
@@ -26,7 +26,7 @@ router.put('/', async (req, res, next) => {
   }
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', isAdmin(7), async (req, res, next) => {
   try {
     await Cate.create({ id: req.body.id });
     res.status(200).json({ success: true });
@@ -35,7 +35,7 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.delete('/', isAdmin(8), tree(), async (req, res, next) => {
+router.delete('/', isAdmin(7), tree(), async (req, res, next) => {
   try {
     const treeArray = findAllId(findObj(req.tree, req.body.id), []);
     await Cate.destroy({ where: { id: { [Op.or]: treeArray } } });
