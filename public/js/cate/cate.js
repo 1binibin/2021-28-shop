@@ -1,5 +1,5 @@
 var core = {};
-var plugins = ['contextmenu', 'dnd', 'search', 'state', 'wholerow', 'changed', 'types'];
+var plugins = ['contextmenu', 'dnd', 'search', 'state', 'wholerow', 'types'];
 
 var types = {
   default: {
@@ -23,14 +23,10 @@ core.data = {
   },
 };
 
-function onChangedTree(e, data) {
-  console.log(data.node.id);
-}
-
 function onCreateTree(e, data) {
   axios
     .post('/api/tree', { id: data.node.id })
-    .then()
+    .then(onUpdateTree)
     .catch(function (err) {
       console.log(err);
     });
@@ -47,14 +43,18 @@ function onDeleteTree(e, data) {
 
 function onUpdateTree() {
   axios
-    .put('/api/tree', { node: $('#jstreeWrap').jstree(true).get_json('#') })
+    .put('/api/tree', { node: $('#jstreeWrap').jstree().get_json('#') })
     .then(function (r) {
-      console.log('update');
       $('#jstreeWrap').jstree().refresh();
     })
     .catch(function (err) {
       console.log(err);
     });
+}
+
+function onRenameTree(e, data) {
+  data.node.state.selected = false;
+  onUpdateTree();
 }
 
 $('#jstreeWrap')

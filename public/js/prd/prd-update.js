@@ -22,11 +22,15 @@ core.data = {
 
 $('#jstreeWrap')
   .jstree({ core: core, plugins: plugins })
-  .on('changed.jstree', onChangeTree)
-  .on('loaded.jstree', onLoadedTree);
+  .on('loaded.jstree', onLoadedTree)
+  .on('changed.jstree', onChangeTree);
 
 function onLoadedTree(e, data) {
   allData = data.instance._model.data;
+  console.log(Object.entries(allData));
+  Object.entries(allData).forEach(function (v) {
+    v[1].state.selected = false;
+  });
   $('#jstreeWrap').jstree('check_node', cateArr);
   onCloseModal();
 }
@@ -55,7 +59,9 @@ function onCloseModal() {
     }
     title += allData[v].text;
     html += '<div class="tree-data">' + title + '</div>';
-    $('.prd-wrapper form[name="prdCreateForm"] input[name="cate"]').val(cate.join(','));
+    $('.prd-wrapper form[name="prdCreateForm"] input[name="cate"]').val(
+      cate.join(',')
+    );
   }
   $('.prd-wrapper .selected-tree').html(html);
 }
@@ -93,7 +99,6 @@ var quill = new Quill('#editor', {
   theme: 'snow',
 });
 
-// 파일 삭제
 $('form[name="prdCreateForm"]').submit(onSubmitPrdCreateForm);
 function onSubmitPrdCreateForm(e) {
   e.preventDefault();
@@ -110,16 +115,16 @@ function onDeleteFile(id, el) {
   if (confirm('파일을 삭제하시겠습니까?\n삭제하신 파일은 되돌릴 수 없습니다.')) {
     axios
       .delete('/admin/api/file/' + id + '?modelName=ProductFile')
-      .then(onSuccess)
+      .then(onSucess)
       .catch(onError);
   }
-  function onSuccess(r) {
+  function onSucess(r) {
     if (r.data.code == 200) {
       var html =
         '<div class="file-wrap"><input type="file" name="' +
         $(el).data('name') +
         '" class="form-control-file my-2" /></div>';
-      $(el).parent().after(html); // $(el).parent().parent().append(html);
+      $(el).parent().after(html);
       $(el).parent().remove();
     }
   }

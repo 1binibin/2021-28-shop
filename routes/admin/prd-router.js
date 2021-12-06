@@ -1,15 +1,17 @@
+const path = require('path');
 const express = require('express');
 const router = express.Router();
 const { escape, unescape } = require('html-escaper');
 const createError = require('http-errors');
+const { error } = require('../../modules/util');
 const _ = require('lodash');
 const { Product, ProductFile, CateProduct, Cate } = require('../../models');
 const uploader = require('../../middlewares/multer-mw');
 const afterUploader = require('../../middlewares/after-multer-mw');
+const sharpInit = require('../../middlewares/sharp-mw');
 const { moveFile } = require('../../modules/util');
 const queries = require('../../middlewares/query-mw');
 const { isAdmin } = require('../../middlewares/auth-mw');
-const sharpInit = require('../../middlewares/sharp-mw');
 
 router.get('/', queries(), (req, res, next) => {
   if (req.query.type === 'create') {
@@ -19,7 +21,10 @@ router.get('/', queries(), (req, res, next) => {
 
 router.get('/', queries(), async (req, res, next) => {
   try {
-    const { lists, pager, totalRecord } = await Product.getLists(req.query, ProductFile);
+    const { lists, pager, totalRecord } = await Product.getLists(
+      req.query,
+      ProductFile
+    );
     // res.json({ lists, pager, totalRecord });
     res.render('admin/prd/prd-list', { lists, pager, totalRecord });
   } catch (err) {
@@ -48,7 +53,15 @@ router.post(
     { name: 'detail_1' },
     { name: 'detail_2' },
   ]),
-  afterUploader(['img_1', 'img_2', 'img_3', 'img_4', 'img_5', 'detail_1', 'detail_2']),
+  afterUploader([
+    'img_1',
+    'img_2',
+    'img_3',
+    'img_4',
+    'img_5',
+    'detail_1',
+    'detail_2',
+  ]),
   sharpInit(300),
   queries('body'),
   async (req, res, next) => {
@@ -57,7 +70,7 @@ router.post(
         req.body.content = escape(req.body.content);
         await Product.update(req.body, { where: { id: req.body.id } });
         req.files.forEach((file) => (file.prd_id = req.body.id));
-        await ProductFile.bulkCreate(req.files);
+        const files = await ProductFile.bulkCreate(req.files);
         await CateProduct.destroy({ where: { prd_id: req.body.id } });
         const catePrd = req.body.cate.split(',').map((cate) => ({
           cate_id: cate,

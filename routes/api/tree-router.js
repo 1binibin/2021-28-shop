@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs-extra');
 const express = require('express');
-const { Cate } = require('../../models');
+const { Cate, CateProduct } = require('../../models');
 const tree = require('../../middlewares/tree-mw');
 const { Op } = require('sequelize');
 const { findAllId, findObj } = require('../../modules/util');
@@ -17,20 +17,23 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// JSON 바꾸기
 router.put('/', isAdmin(7), async (req, res, next) => {
   try {
-    const tree = await fs.writeJSON(path.join(__dirname, '../../json/tree.json'), req.body.node);
+    await fs.writeJSON(path.join(__dirname, '../../json/tree.json'), req.body.node);
     res.status(200).json({ success: true });
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
+// DB 카테고리 등록
 router.post('/', isAdmin(7), async (req, res, next) => {
   try {
     await Cate.create({ id: req.body.id });
     res.status(200).json({ success: true });
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
@@ -39,6 +42,7 @@ router.delete('/', isAdmin(7), tree(), async (req, res, next) => {
   try {
     const treeArray = findAllId(findObj(req.tree, req.body.id), []);
     await Cate.destroy({ where: { id: { [Op.or]: treeArray } } });
+    await CateProduct.destroy({ where: { cate_id: { [Op.or]: treeArray } } });
     res.status(200).json({ success: true });
   } catch (err) {
     res.status(500).json(err);
