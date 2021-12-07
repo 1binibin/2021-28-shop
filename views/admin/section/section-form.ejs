@@ -9,8 +9,8 @@
     <% } %>
       <div class="tag"><%= name %></div>
     <div class="input-wrap">
-      <input type="text" name="name" class="form-control form-control-sm" value="<%= name %>" placeholder="분류명">
-      <input type="color" name="color" value="<%= color %>" onchange="onColorChange(this);">
+      <input type="text" name="name" class="form-control form-control-sm" value="<%= name %>" placeholder="분류명" onchange="onTxtChange(this);">
+      <input type="color" name="color" value="<%= color %>" onkeyup="onColorChange(this);">
     </div>
     <div class="btn-wrap">
       <button type="button" class="btn btn-sm btn-dark" onclick="onSubmit(this);">

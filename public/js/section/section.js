@@ -10,9 +10,14 @@ function onColorReset(el) {
   $(el.form.name).val(name);
 }
 
+function onTxtChange(el) {
+  var txt = el.value;
+  $(el.form).find('.tag').text(txt);
+}
+
 function changeColor(color, el) {
-  var txtColor = Color(color.substr(1));
-  txtColor = txtColor.toHSL()[2];
+  var hslColor = hexToHSL(color);
+  var txtColor = hslColor.l > 0.5 ? '#000000' : '#ffffff';
   $(el.form).find('.tag').css('background-color', color);
   $(el.form).find('.tag').css('color', txtColor);
 }
