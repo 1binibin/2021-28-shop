@@ -6,6 +6,35 @@
   .red {
     color: red;
   }
+  .section-wrap {
+    @include flex;
+    label {
+      @include flex($v: center);
+      margin-right: 1.5em;
+      input {
+        margin-right: 0.325em;
+      }
+      .box {
+        padding: 0.25em 0.5em;
+        border-radius: 5px;
+      }
+    }
+  }
+  .color-wrap {
+    @include flex;
+    label {
+      @include flex($v: center);
+      margin-right: 1.5em;
+      input {
+        margin-right: 0.325em;
+      }
+      .circle {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+      }
+    }
+  }
   .modal-wrapper {
     @include flex($h: center, $v: center);
     @include layer($p: fixed, $l: 0, $t: 0, $i: 99);
@@ -79,24 +108,8 @@
     }
   }
   &.update-wrapper {
-    .small {
-      width: 200px;
-    }
-    .red {
-      color: red;
-    }
-    .selected-tree {
-      @include flex($w: wrap);
-      .tree-data {
-        padding: 0.25em 0.5em;
-        background-color: $white-color;
-        border: 1px solid $light-color;
-        margin: 0.25em;
-      }
-    }
     .file-wrap {
       @include flex($v: flex-end, $w: wrap);
-      align-items: flex-end;
       margin-bottom: 0.5em;
       padding-bottom: 0.5em;
       border-bottom: 1px dotted #ccc;

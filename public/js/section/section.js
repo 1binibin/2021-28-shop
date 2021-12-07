@@ -8,6 +8,7 @@ function onColorReset(el) {
   changeColor(color, el);
   $(el.form.code).val(color);
   $(el.form.name).val(name);
+  $(el.form).find('.tag').text(name);
 }
 
 function onTxtChange(el) {
