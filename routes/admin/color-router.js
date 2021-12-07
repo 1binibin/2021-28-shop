@@ -3,12 +3,15 @@ const express = require('express');
 const router = express.Router();
 const createError = require('http-errors');
 const { Color } = require('../../models');
+const { isAdmin } = require('../../middlewares/auth-mw');
 
 router.get('/', async (req, res, next) => {
   try {
-    const list = await Color.findAll({ attribute: ['id', 'name', 'code'], order: [['id', 'desc']] });
-    console.log(list);
-    res.render('admin/color/color-list', { list });
+    const list = await Color.findAll({
+      attributes: ['id', 'name', 'code'],
+      order: [['id', 'desc']],
+    });
+    res.render('admin/color/color-list.ejs', { list });
   } catch (err) {
     next(createError(err));
   }
@@ -23,20 +26,22 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.put('/', async (req, res, next) => {
+router.put('/', isAdmin(8), async (req, res, next) => {
   try {
-    res.send('hello');
+    await Color.update(req.body, { where: { id: req.body.id } });
+    res.redirect('/admin/color');
   } catch (err) {
     next(createError(err));
   }
 });
 
-router.delete('/', async (req, res, next) => {
+router.delete('/', isAdmin(8), async (req, res, next) => {
   try {
-    res.send('hello');
+    await Color.destroy({ where: { id: req.body.id } });
+    res.redirect('/admin/color');
   } catch (err) {
     next(createError(err));
   }
 });
 
-module.exports = { name: '/color', router };
+module.exports = { router, name: '/color' };

@@ -13,12 +13,12 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         allowNull: false,
       },
       name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING(50),
         allowNull: false,
       },
       color: {
         type: DataTypes.STRING(7),
-        allowNull: true,
+        allowNull: false,
         defaultValue: '#000000',
       },
     },
@@ -40,5 +40,6 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       onDelete: 'CASCADE',
     });
   };
+
   return Section;
 };

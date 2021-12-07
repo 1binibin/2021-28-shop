@@ -12,7 +12,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         autoIncrement: true,
         allowNull: false,
       },
-      color: {
+      name: {
         type: DataTypes.STRING(50),
         allowNull: false,
       },
@@ -39,5 +39,6 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       onDelete: 'CASCADE',
     });
   };
+
   return Color;
 };
