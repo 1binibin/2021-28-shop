@@ -3,6 +3,7 @@ const { unescape } = require('html-escaper');
 const numeral = require('numeral');
 const { dateFormat, relPath, relThumbPath } = require('../modules/util');
 const createPager = require('../modules/pager-init');
+const { findLastId, findObj, findAllId, findChildId } = require('../modules/util');
 
 module.exports = (sequelize, { DataTypes, Op }) => {
   const Product = sequelize.define(
@@ -46,6 +47,10 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
+      start: {
+        type: DataTypes.DECIMAL(1, 1),
+        allowNull: true,
+      },
       readCounter: {
         type: DataTypes.INTEGER(10).UNSIGNED,
         defaultValue: 0,
@@ -77,12 +82,71 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
     });
+    Product.belongsToMany(models.Color, {
+      foreignKey: {
+        name: 'prd_id',
+      },
+      through: 'color_product',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    });
+    Product.belongsToMany(models.Section, {
+      foreignKey: {
+        name: 'prd_id',
+      },
+      through: 'section_product',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    });
   };
 
   Product.getCount = async function (query) {
     return await this.count({
       where: sequelize.getWhere(query),
     });
+  };
+
+  Product.findProducts = async function (query, Cate, ProductFile) {
+    try {
+      let { field, sort, page = 1, search, grp, cid = 'j1_1' } = query;
+      // tree
+      const [allTree] = await Cate.getAllCate();
+      const myTree = findObj(allTree, cid);
+      const lastTree = findLastId(myTree, []);
+
+      // pager
+      let listCnt = 15;
+      let pagerCnt = 5;
+      const totalRecord = await this.getCount(query);
+      const pager = createPager(page, totalRecord, listCnt, pagerCnt);
+
+      const rs = await Product.findAll({
+        where: sequelize.getWhere(query, '2'),
+        offset: pager.startIdx,
+        limit: pager.listCnt,
+        attributes: ['id', 'title', 'priceOrigin', 'priceSale', 'amount', 'status', 'summary', 'readCounter'],
+        include: [
+          {
+            model: Cate,
+            through: { attributes: [] },
+            attributes: [['id', 'cid']],
+            where: { id: { [Op.or]: [...lastTree] } },
+            order: [[field, sort]],
+          },
+          {
+            model: ProductFile,
+            attributes: ['id', 'saveName', 'fileType', 'fieldNum'],
+            order: [
+              [ProductFile, 'fileType', 'ASC'],
+              [ProductFile, 'fieldNum', 'ASC'],
+            ],
+          },
+        ],
+      });
+      return rs;
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   Product.findProduct = async function (id, Cate, ProductFile) {
