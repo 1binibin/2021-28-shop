@@ -1,6 +1,6 @@
 const _ = require('lodash');
-const { unescape } = require('html-escaper');
 const numeral = require('numeral');
+const { unescape } = require('html-escaper');
 const { dateFormat, relPath, relThumbPath } = require('../modules/util');
 const createPager = require('../modules/pager-init');
 const { findLastId, findObj, findAllId, findChildId } = require('../modules/util');
@@ -113,7 +113,6 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       const [allTree] = await Cate.getAllCate();
       const myTree = findObj(allTree, cid);
       const endTree = findLastId(myTree, []);
-
       // pager
       let listCnt = 15;
       let pagerCnt = 5;
@@ -136,10 +135,12 @@ module.exports = (sequelize, { DataTypes, Op }) => {
           {
             model: Color,
             through: { attributes: [] },
+            attributes: ['id', 'name', 'code'],
           },
           {
             model: Section,
             through: { attributes: [] },
+            attributes: ['id', 'name', 'color'],
           },
           {
             model: ProductFile,
@@ -163,9 +164,23 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       order: [[ProductFile, 'id', 'asc']],
       include: [
         { model: Cate },
-        { model: ProductFile },
-        { model: Color, attributes: ['id'], through: { attributes: [] } },
-        { model: Section, attributes: ['id'], through: { attributes: [] } },
+        {
+          model: ProductFile,
+        },
+        {
+          model: Color,
+          attributes: ['id'],
+          through: {
+            attributes: [],
+          },
+        },
+        {
+          model: Section,
+          attributes: ['id'],
+          through: {
+            attributes: [],
+          },
+        },
       ],
     });
     const data = rs.toJSON();
@@ -233,7 +248,6 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       ],
     });
     const lists = this.getListData(rs);
-
     return { lists, pager, totalRecord: numeral(pager.totalRecord).format() };
   };
 
