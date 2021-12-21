@@ -31,7 +31,7 @@ router.put('/', isAdmin(7), async (req, res, next) => {
   }
 });
 
-// JSON 바꾸기
+// DB 바꾸기
 router.put('/:id', isAdmin(7), async (req, res, next) => {
   try {
     const id = req.params.id;
