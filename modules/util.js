@@ -159,7 +159,19 @@ function findChildId(_obj) {
   return arr;
 }
 
-// _obj의 자식들의 모든id를 리턴하는 재귀함수
+// _obj의 자손들중 Endpoint id를 리턴하는 재귀함수
+function findLastId(_obj, arr) {
+  if (_obj.children.length) {
+    for (let v of _obj.children) {
+      findLastId(v, arr);
+    }
+  } else {
+    arr.push(_obj.id);
+  }
+  return arr;
+}
+
+// _obj의 자식들의 id를 리턴하는 재귀함수
 function findAllId(_obj, arr) {
   if (_obj.children) {
     for (let v of _obj.children) {
@@ -170,15 +182,14 @@ function findAllId(_obj, arr) {
   return arr;
 }
 
-// _obj의 자손들중 Endpoint id를 리턴하는 재귀함수
-function findLastId(_obj, arr) {
-  if (_obj.children.length) {
+// _obj의 자식들의 값을 리턴하는 재귀함수2
+function findAllId2(_obj, arr) {
+  if (_obj.children) {
     for (let v of _obj.children) {
-      findLastId(v, arr);
+      findAllId2(v, arr);
     }
-  } else {
-    arr.push(_obj.id);
   }
+  arr.push({ id: _obj.id, name: _obj.text });
   return arr;
 }
 
@@ -199,8 +210,9 @@ module.exports = {
   getSeparateString,
   getSeparateArray,
   dateFormat,
-  findChildId,
-  findObj,
   findLastId,
+  findChildId,
   findAllId,
+  findAllId2,
+  findObj,
 };
