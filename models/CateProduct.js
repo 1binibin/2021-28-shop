@@ -11,7 +11,7 @@ module.exports = (sequelize, { DataTypes, Op }) => {
         allowNull: true,
       },
       cate_id: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.INTEGER(10).UNSIGNED,
         primaryKey: true,
         allowNull: true,
       },
@@ -43,6 +43,5 @@ module.exports = (sequelize, { DataTypes, Op }) => {
       onDelete: 'CASCADE',
     });
   };
-
   return CateProduct;
 };
