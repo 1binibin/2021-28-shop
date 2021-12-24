@@ -23,7 +23,7 @@ module.exports = {
       userid: 'demoUser',
       userpw: await bcrypt.hash('111111' + salt, Number(round)),
       username: '데모관리자',
-      email: 'demodemo@demo.com',
+      email: 'demo@demo.com',
       tel: '010-3333-8888',
       addrPost: '12345',
       addrRoad: '서울시 마포구 노고산로',
