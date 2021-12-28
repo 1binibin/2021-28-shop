@@ -108,8 +108,8 @@
 - 일치 한다면 JWT를 통한 쿠키 생성
 - json으로 데이터를 리턴
 
-## [Front Server](https://shop.1bin.kr/)
+## [Front](https://shop.1bin.kr/)
 
 # Database
 
-
+![shop-erd](https://user-images.githubusercontent.com/87403399/147549285-5039c386-cbfc-49bf-ae1c-801066fb292c.png)
