@@ -101,13 +101,6 @@
    - 게시판 내용에 따른 정렬 및 검색 구현
 
 
-## 2. Api Server
-
-- cookie의 존재 여부 검사
-- Back 서버에서 발급받은 Api key와 도메인의 일치 여부
-- 일치 한다면 JWT를 통한 쿠키 생성
-- json으로 데이터를 리턴
-
 ## [Front](https://shop.1bin.kr/)
 
 # Database
